@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ad9062ee1d67a148bce2c43f675cb1c, type: 3}
+  m_Name: GameConfig
+  m_EditorClassIdentifier: 
+  blockSpeed: 15
+  worldSizeX: 13
+  worldSizeY: 13
+  blocksData:
+  - {fileID: 6249155255106001839, guid: 0a1101e9a5edea94e99fb0a1c45a0edd, type: 3}
+  - {fileID: 5695621687123512485, guid: a52fe13f68df7374f8046b5f33e05d55, type: 3}
+  - {fileID: 5695621687123512485, guid: b9e027a094a57a44f90dd971432c3b17, type: 3}
+  - {fileID: 5695621687123512485, guid: 936c16dfada110849a35ba50ec40f9dd, type: 3}
+  maxLevelsPerWorld: 
+  skyboxColors:
+  - {r: 0.5421413, g: 0.7914127, b: 0.8773585, a: 0}
+  - {r: 0.89127755, g: 0.99215686, b: 0.8039216, a: 0}
+  - {r: 0.8039216, g: 0.9372549, b: 0.99215686, a: 0}
+  - {r: 0.8490566, g: 0.750267, b: 0.7008722, a: 0}
+  - {r: 0.18431373, g: 0.4745098, b: 0.627451, a: 0}
+  - {r: 0, g: 0.70980394, b: 0.6392157, a: 0}
+  - {r: 0.21176471, g: 0.19607843, b: 0.39607844, a: 0}
+  - {r: 0.21176471, g: 0.19607843, b: 0.39607844, a: 0}
+  - {r: 1, g: 0.7921569, b: 0.6509804, a: 0}
+  - {r: 0.07058824, g: 0.7921569, b: 0.93333334, a: 0}
+  - {r: 0.9254902, g: 0.81960785, b: 0.5411765, a: 0}
+  - {r: 0.07058824, g: 0.7921569, b: 0.93333334, a: 0}
+  - {r: 0.07058824, g: 0.93333334, b: 0.6039216, a: 0}
+  - {r: 0.3764706, g: 0.36862746, b: 0.48235294, a: 0}
+  - {r: 0.3764706, g: 0.6666667, b: 0.7490196, a: 0}
+  - {r: 0.07058824, g: 0.7921569, b: 0.93333334, a: 0}
+  backTextures:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

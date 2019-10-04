@@ -1,0 +1,124 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59257874c97d69141aa94b3fe7b39933, type: 3}
+  m_Name: JsonData
+  m_EditorClassIdentifier: 
+  localJson: {fileID: 4900000, guid: 863711563d8069f4cab53b22b28bf266, type: 3}
+  jsonData:
+    WorldJson:
+    - world: 0
+      levels:
+      - level: 0
+        BlockJson:
+        - type: 0
+          position:
+            x: 3
+            y: 0
+        - type: 0
+          position:
+            x: 0
+            y: 0
+        enemySections: []
+      - level: 2
+        BlockJson:
+        - type: 0
+          position:
+            x: 8
+            y: 2
+        - type: 0
+          position:
+            x: 5
+            y: 2
+        - type: 0
+          position:
+            x: 7
+            y: 2
+        - type: 1
+          position:
+            x: 4
+            y: 2
+        - type: 1
+          position:
+            x: 2
+            y: 3
+        - type: 1
+          position:
+            x: 3
+            y: 4
+        enemySections: []
+      - level: 3
+        BlockJson:
+        - type: 0
+          position:
+            x: 8
+            y: 2
+        - type: 0
+          position:
+            x: 5
+            y: 3
+        - type: 0
+          position:
+            x: 7
+            y: 2
+        - type: 1
+          position:
+            x: 4
+            y: 2
+        - type: 1
+          position:
+            x: 2
+            y: 3
+        - type: 1
+          position:
+            x: 3
+            y: 4
+        enemySections: []
+    - world: 1
+      levels:
+      - level: 1
+        BlockJson:
+        - type: 0
+          position:
+            x: 8
+            y: 5
+        - type: 0
+          position:
+            x: 5
+            y: 5
+        - type: 0
+          position:
+            x: 7
+            y: 5
+        enemySections:
+        - type: 0
+          position:
+            x: 7
+            y: 5
+      - level: 2
+        BlockJson:
+        - type: 0
+          position:
+            x: 8
+            y: 5
+        - type: 0
+          position:
+            x: 5
+            y: 5
+        - type: 0
+          position:
+            x: 7
+            y: 5
+        enemySections:
+        - type: 0
+          position:
+            x: 7
+            y: 5

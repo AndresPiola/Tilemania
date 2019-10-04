@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6be5d28977b96d4ba180d5fd31ba3a8, type: 3}
+  m_Name: GameInstance
+  m_EditorClassIdentifier: 
+  rank: {fileID: 0}
+  saveGameReference:
+    name: 
+    score: 0
+    level: 1
+    xp: 0
+    currency: 0000000000000000000000000000000000000000
+    tier: 0
+    tierXp: 0
+    tierLevel: 0
+    progressRecord:
+    - id: 0
+      level: 1
+    - id: 1
+      level: 1
+    - id: 2
+      level: 1
+  bSkipMainMenu: 0
+  currentevel: 1
+  maxLevel: 41
+  playerScore: 0
+  hiScore: 0
+  bHideMainMenu: 0
+  roundCurrency: 0000000000000000000000000000000000000000

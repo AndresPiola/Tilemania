@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7df04f7b17cefa049944be11977d74ae, type: 3}
+  m_Name: SpawnData
+  m_EditorClassIdentifier: 
+  enemies:
+  - id: 0
+    name: 
+    prefab: {fileID: 0}
+    hp: 10
+    criticalSfx: {fileID: 0}

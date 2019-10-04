@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdd4a87d252c21641bff935927312582, type: 3}
+  m_Name: AudioData
+  m_EditorClassIdentifier: Assembly-CSharp::AudioData
+  columnReposition: {fileID: 8300000, guid: be735147dba86dd42b1733be0c56045a, type: 3}
+  columnHit: {fileID: 8300000, guid: 2ffeb7162d35c804186bd4af324af57f, type: 3}
+  playerDash: {fileID: 8300000, guid: 6e8772b49f34d402a90016ed445d8a2f, type: 3}
+  goalCompleted: {fileID: 8300000, guid: 7006e2b21d5ceb84a95d9d568968cf57, type: 3}
+  gameOver: {fileID: 8300000, guid: 496c82e4332cc1f4f8aa1c685b35c431, type: 3}
+  itemSounds:
+  - {fileID: 8300000, guid: 881e3f52c86c94f26a60718d35627cd8, type: 3}
+  - {fileID: 8300000, guid: 881e3f52c86c94f26a60718d35627cd8, type: 3}
+  winMusic: {fileID: 8300000, guid: 13e76758419e0d2409cbbc206c9ab922, type: 3}
+  firstPositionWinMusic: {fileID: 8300000, guid: b50af9757d0c5744897afb5c5e7dfde8,
+    type: 3}
+  loseMusic: {fileID: 8300000, guid: 2c4f40efd15f006459805f1e6cd9a93d, type: 3}
