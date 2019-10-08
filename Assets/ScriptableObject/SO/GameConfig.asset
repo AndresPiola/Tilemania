@@ -30,7 +30,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b534ddcb937a56b4996be667bfa0a24f, type: 3}
   - {fileID: 21300000, guid: f9107dd7fce151c4d866d24ee1bd14e8, type: 3}
   - {fileID: 21300000, guid: b9d27984d142d2a40a4f2004cafa0145, type: 3}
-  - {fileID: 21300000, guid: d1029bf9a820a7c4fa68f562b7784e30, type: 3}
+  - {fileID: 21300000, guid: 79dc66133dc712b45a77ff65d1d5e4ff, type: 3}
   maxLevelsPerWorld: 
   skyboxColors:
   - {r: 0.5421413, g: 0.7914127, b: 0.8773585, a: 0}

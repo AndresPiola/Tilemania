@@ -192,7 +192,7 @@ public class Tile : SerializedMonoBehaviour
     {
         int numberColors = ColorsPalette.Instance.blockColors.Length;
 
-        blockType =Random.Range(0, 4); 
+        blockType =Random.Range(0, 5); 
 
         blockScore = Random.Range(1, 7); 
         valueText?.SetText(blockScore.ToString());

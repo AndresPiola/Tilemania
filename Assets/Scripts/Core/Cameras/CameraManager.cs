@@ -1,8 +1,10 @@
-﻿using Cinemachine;
+﻿using System;
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
- 
+using Random = UnityEngine.Random;
+
 public class CameraManager : MonoBehaviour {
 
     Camera main;
@@ -19,22 +21,46 @@ public class CameraManager : MonoBehaviour {
     private void OnEnable()
     {
          GameFeel.OnCameraShake += GameFeel_OnCameraShake;
+        GameMode.OnGameState += GameMode_OnGameState;
+    }
+
+    private void GameMode_OnGameState(EGameStates _val1)
+    {
+        switch (_val1)
+        {
+            case EGameStates.MAIN_MENU:
+                break;
+            case EGameStates.CONNECTING:
+                break;
+            case EGameStates.RELOADING_ROUND:
+                break;
+            case EGameStates.LOADING_NEXTROUND:
+                break;
+            case EGameStates.LOADING_REMATCH:
+                break;
+            case EGameStates.GAMEPLAY:
+                break;
+            case EGameStates.ROUND_OVER:
+                LeanTween.moveX(gameObject, 10, 1f).setEase(LeanTweenType.easeInBounce);
+
+                break;
+            case EGameStates.GAME_OVER:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(_val1), _val1, null);
+        }
     }
 
     private void Awake()
-    {
-        transform.position = finalPosition;
+    { 
     }
     private void Start()
     {
-        main = Camera.main;
-
-        transform.position = finalPosition;
-
+      
     }
     private void GameFeel_OnCameraShake()
     {
-       // StartCoroutine(Shake());
+       StartCoroutine(Shake());
 
     }
     IEnumerator Shake()
@@ -72,8 +98,7 @@ public class CameraManager : MonoBehaviour {
     }
     private void PlayerPawn_OnPlayerReady(Pawn _player)
     {
-        if(MustFollow)
-        FindPlayer(_player);
+       
     }
 
     private void OnDisable()
@@ -81,14 +106,5 @@ public class CameraManager : MonoBehaviour {
          GameFeel.OnCameraShake -= GameFeel_OnCameraShake;
 
     }
-    // Use this for initialization
-
-    void FindPlayer(Pawn _player)
-    {
-
-             GetComponent<CinemachineVirtualCamera>().Follow = _player.transform;
-       GetComponent<CinemachineVirtualCamera>().LookAt = _player.transform;
-
-       
-    }
+    
 }
