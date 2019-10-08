@@ -2,7 +2,9 @@
  using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+ using Sirenix.OdinInspector;
+ using Sirenix.OdinInspector.Editor.Drawers;
+ using UnityEngine;
 using Random = UnityEngine.Random;
 
 
@@ -11,7 +13,8 @@ public class AudioManager : Singleton<AudioManager> {
 
     AudioSource audioSrc;
 
-     public AudioData audioData;
+    [PreviewField]
+    public AudioData audioData;
 
 
     private void OnEnable()
@@ -79,19 +82,19 @@ public class AudioManager : Singleton<AudioManager> {
         Play(audioData.goalCompleted);
 
     }
-
-    
-    public void PlayPlayerMove()
+    public void PlayPutTile()
     {
-        Play(audioData.playerDash);
+
+        Play(audioData.putTileInArea);
 
     }
-    public void PlayColumnsReposition()
-    {
-        Play(audioData.columnReposition);
+
+    public void PlayComboSound()
+    { 
+        Play(audioData.comboBonus); 
     }
-    public void PlayColumnHit()
+    public void PlayTileReturn()
     {
-        Play(audioData.columnHit);
+        Play(audioData.tileReturn);
     }
 }

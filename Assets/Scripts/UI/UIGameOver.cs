@@ -27,14 +27,14 @@ public class UIGameOver : MonoBehaviour {
     private void OnDisable()
     {
         GameMode.OnGameState -= GameMode_OnGameState;
-        retryButton.onClick.RemoveAllListeners();
+        retryButton?.onClick.RemoveAllListeners();
 
     }
 
     private void OnEnable()
     {
         GameMode.OnGameState += GameMode_OnGameState;
-        retryButton.onClick.AddListener(() =>
+        retryButton?.onClick.AddListener(() =>
         {
             GameMode.Instance.RetryLevel();
 
@@ -83,7 +83,7 @@ public class UIGameOver : MonoBehaviour {
     }
     IEnumerator ShowGameOver()
     {
-        level.SetText("Level "+GameInstance.Instance.playerLevel.ToString());
+        level?.SetText("Level "+GameInstance.Instance.playerLevel.ToString());
 
         gameOverPanel.gameObject.SetActive(true);
 

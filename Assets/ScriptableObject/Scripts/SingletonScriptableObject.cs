@@ -1,5 +1,6 @@
 ﻿ using System.Linq;
-using UnityEngine;
+ using Sirenix.OdinInspector;
+ using UnityEngine;
 
 /// <summary>
 /// Abstract class for making reload-proof singletons out of ScriptableObjects
@@ -8,7 +9,7 @@ using UnityEngine;
 /// </summary>
 /// <typeparam name="T">Singleton type</typeparam>
 
-public abstract class SingletonScriptableObject<T> : ScriptableObject where T : ScriptableObject
+public abstract class SingletonScriptableObject<T> : SerializedScriptableObject where T : SerializedScriptableObject
 {
     static T _instance = null;
     public static T Instance

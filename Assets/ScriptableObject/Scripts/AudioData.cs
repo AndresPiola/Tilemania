@@ -1,7 +1,8 @@
 ﻿
  using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+ using Sirenix.OdinInspector;
+ using UnityEngine;
  
 
 public enum SFX { BALLOON_POP} 
@@ -11,10 +12,12 @@ public class AudioData : SingletonScriptableObject<AudioData>
 {
 
     [Header("Gameplay")]
-    public AudioClip columnReposition;
-    public AudioClip columnHit;
+    [PreviewField]
+    public AudioClip comboBonus;
+    public AudioClip putTileInArea;
+    public AudioClip tileReturn;
 
-    public AudioClip playerDash;
+    [Header("Gameplay Events")]
 
     public AudioClip goalCompleted;
     public AudioClip gameOver;

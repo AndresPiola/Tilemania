@@ -12,6 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3726fef2cafc6544ebff8dc1ebe24c6c, type: 3}
   m_Name: ColorsPalette
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   skyGradientColors:
   - colorA:
       serializedVersion: 2
@@ -25,3 +34,9 @@ MonoBehaviour:
     colorB:
       serializedVersion: 2
       rgba: 15196157
+  blockColors:
+  - {r: 0.22745098, g: 0.7764706, b: 0.5372549, a: 1}
+  - {r: 0.9254902, g: 0.52156866, b: 0.15686275, a: 1}
+  - {r: 0.83137256, g: 0.8, b: 0.03529412, a: 1}
+  - {r: 0.9764706, g: 0.38039216, b: 0.3764706, a: 1}
+  - {r: 0, g: 0.75686276, b: 0.9254902, a: 1}

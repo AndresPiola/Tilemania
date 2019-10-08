@@ -25,15 +25,16 @@ public class PopUpText : MonoBehaviour {
 
     }
 
-    public void PopUp(string _text,float _time=1)
+    public void ShowPopUp(string _text,float _time=.2f)
     {
         text.SetText(_text);
 
         seq = LeanTween.sequence();
+        LeanTween.scale(gameObject, Vector3.one, .1f).setEaseInBounce();
 
-        seq.append(LeanTween.moveLocalY(text.gameObject, 10, _time)
+        seq.append(LeanTween.moveLocalY(text.gameObject, 1, _time)
             .setEase(LeanTweenType.easeInQuad));
-
+        seq.append(.5f);
         seq.append(LeanTween.scale(text.rectTransform,Vector3.zero, _time/2)
          .setOnComplete(this.Deactivate )); 
     }

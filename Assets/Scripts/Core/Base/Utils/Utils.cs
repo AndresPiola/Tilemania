@@ -1,8 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Utils : MonoBehaviour {
+
+    public static T RandomEnumValue<T>()
+    {
+        var values = Enum.GetValues(typeof(T));
+        int random = UnityEngine.Random.Range(0, values.Length);
+        return (T)values.GetValue(random);
+    }
 
     public static int GetRandomIndex<T>(T[] _array, int _maxLenght = -1)
     {
@@ -43,6 +52,13 @@ public class Utils : MonoBehaviour {
         return list;
     }
 
+    
+    public  static void Swap<T>(IList<T> list, int indexA, int indexB)
+    {
+        T tmp = list[indexA];
+        list[indexA] = list[indexB];
+        list[indexB] = tmp;
+    }
     public static int[] IntToIntArray(int num)
     {
         if (num == 0)

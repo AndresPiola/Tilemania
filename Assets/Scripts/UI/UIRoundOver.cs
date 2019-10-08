@@ -40,7 +40,7 @@ public class UIRoundOver : MonoBehaviour
     private void OnDisable()
     {
         GameMode.OnGameState -= GameMode_OnGameState;
-         nextLevelButton.onClick.RemoveAllListeners();
+         nextLevelButton?.onClick.RemoveAllListeners();
 
     }
     private void GameMode_OnGameState(EGameStates _newGameState)

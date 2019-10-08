@@ -10,7 +10,9 @@ public class GameConfig : SingletonScriptableObject<GameConfig>
     public int worldSizeX;
     public int worldSizeY;
 
-  
+    public float tileSize = 32;
+
+    [Header("Tile Icons")] public Sprite[] tileIcons;
     [Header("WorldColors")]
     public int[] maxLevelsPerWorld;
 

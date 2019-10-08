@@ -10,7 +10,8 @@ public class Scriptables : MonoBehaviour {
     public GameInstance gameInstanceSO;
     public AudioData audioDataSO;
     public SpawnData spawnData;
-    public GameConfig gameConfig; 
+    public GameConfig gameConfig;
+    public ColorsPalette colorPalette;
 
     private void Awake()
     {

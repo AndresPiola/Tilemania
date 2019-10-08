@@ -12,14 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad9062ee1d67a148bce2c43f675cb1c, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   blockSpeed: 15
   worldSizeX: 13
   worldSizeY: 13
-  blocksData:
-  - {fileID: 6249155255106001839, guid: 0a1101e9a5edea94e99fb0a1c45a0edd, type: 3}
-  - {fileID: 5695621687123512485, guid: a52fe13f68df7374f8046b5f33e05d55, type: 3}
-  - {fileID: 5695621687123512485, guid: b9e027a094a57a44f90dd971432c3b17, type: 3}
-  - {fileID: 5695621687123512485, guid: 936c16dfada110849a35ba50ec40f9dd, type: 3}
+  tileSize: 1
+  tileIcons:
+  - {fileID: 21300000, guid: e659816f1216b7f4a8afd6065d31388b, type: 3}
+  - {fileID: 21300000, guid: b534ddcb937a56b4996be667bfa0a24f, type: 3}
+  - {fileID: 21300000, guid: f9107dd7fce151c4d866d24ee1bd14e8, type: 3}
+  - {fileID: 21300000, guid: b9d27984d142d2a40a4f2004cafa0145, type: 3}
+  - {fileID: 21300000, guid: d1029bf9a820a7c4fa68f562b7784e30, type: 3}
   maxLevelsPerWorld: 
   skyboxColors:
   - {r: 0.5421413, g: 0.7914127, b: 0.8773585, a: 0}

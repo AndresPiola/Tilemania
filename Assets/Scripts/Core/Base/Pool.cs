@@ -64,6 +64,18 @@ using UnityEngine;
 
     }
 
+    public T GetPooledObjectComponent<T>()
+    {
+        
+        return (T)GetPooledObject().GetComponent<T>();
+
+    }
+    public T GetPooledObjectComponent<T>(Vector3 Position)
+    {
+
+        return (T)GetPooledObject(Position).GetComponent<T>();
+
+    }
     public GameObject GetPooledObject()
     {
         tmpObj = null;
