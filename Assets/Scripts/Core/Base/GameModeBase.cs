@@ -180,7 +180,7 @@ public class GameModeBase<T> : MonoBehaviour where T : MonoBehaviour
         SceneManager.LoadSceneAsync(1);
     }
 
-    public void ChangeGameState(EGameStates _newGameState,bool bCallEvent=false)
+    public void ChangeGameState(EGameStates _newGameState,bool bCallEvent=true)
     {
         _gameState = _newGameState;
 

@@ -74,7 +74,14 @@ public class UIRoundOver : MonoBehaviour
     IEnumerator HidePanel()
     { 
         yield return null;
-        panel.gameObject.SetActive(false);
+        LeanTween.moveX(panel, -2000, .2f).setOnComplete(() =>
+        {
+            panel.gameObject.SetActive(false);
+            Vector2 resetPos = panel.anchoredPosition;
+            resetPos.x = 1500;
+            panel.anchoredPosition= resetPos;
+        });
+       
 
     }
     IEnumerator ShowPanel()
@@ -92,7 +99,7 @@ public class UIRoundOver : MonoBehaviour
         bestScore?.SetText(hiScore.ToString());
 
          panel.gameObject.SetActive(true);
-        //  LeanTween.moveLocalY(panel.gameObject, 0, .2f);
+         LeanTween.moveX(panel, 0, .2f);
         yield return Utils.GetWaitForSeconds(.1f);
        // LeanTween.scale(overMessage.GetComponent<RectTransform>(), Vector3.one, showOverMessageTime).setEaseOutBounce();
 

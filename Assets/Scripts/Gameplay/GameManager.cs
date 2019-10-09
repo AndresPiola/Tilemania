@@ -10,6 +10,7 @@ public class GameManager : Singleton<GameManager>
     public Sprite[] targetIcons;
 
     public GameObject targetScoreHolder;
+    private Rigidbody2D targetHolderRb;
     public SpriteRenderer targetIconRenderer;
     public TextMeshPro targetScoreText;
     [Header("TargetValues")]
@@ -21,13 +22,29 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
+        targetHolderRb = targetScoreHolder.GetComponent<Rigidbody2D>();
         GenerateRandomTarget();
     }
 
+    void ResetTargetScoreHolder()
+    {
+        targetHolderRb.bodyType = RigidbodyType2D.Static;
+        targetHolderRb.velocity = Vector2.zero;
+        targetHolderRb.angularVelocity = 0;
+        targetScoreHolder.transform.position = Vector3.zero;
+        targetScoreHolder.transform.rotation = Quaternion.identity;
 
+        targetScoreHolder.transform.localScale = Vector3.zero;
+        LeanTween.scale(targetScoreHolder, Vector3.one, .2f).setEase(LeanTweenType.easeOutElastic);
+        LeanTween.move(targetScoreHolder, Vector2.up *4, 1.4f).setEase(LeanTweenType.easeOutElastic);
+        
+       
+    }
     void GenerateRandomTarget()
     {
-        targetScore = Random.Range(4, 10);
+        ResetTargetScoreHolder();
+        
+       targetScore = Random.Range(4, 10);
         targetScoreText.SetText(targetScore.ToString());
         targetIcon = Random.Range(0, targetIcons.Length);
         targetIconRenderer.sprite = targetIcons[targetIcon];
@@ -41,20 +58,40 @@ public class GameManager : Singleton<GameManager>
         if ( TestValue< targetScore) return false;
         bTargetCompleted = true;
         OnTargetScoreReady?.Invoke();
-        targetScoreHolder.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-        targetScoreHolder.GetComponent<Rigidbody2D>().AddTorque(256);
-        targetScoreHolder.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-1f,1f),1)*4,ForceMode2D.Impulse);
-         
+        targetHolderRb.bodyType = RigidbodyType2D.Dynamic;
+        targetHolderRb.AddTorque(256);
+        targetHolderRb.AddForce(new Vector2(Random.Range(-1f,1f),1)*4,ForceMode2D.Impulse);
+        LeanTween.delayedCall(5,() => { targetHolderRb.bodyType = RigidbodyType2D.Static; });
         return true;
  
     }
 
     public void CheckRoundResults()
     {
-        if(bTargetCompleted)GameMode.Instance.SetRoundOver();
+        if (bTargetCompleted)
+        {
+            int score = 0;
+            List<Tile> finalTiles = DropArea.Instance.activeTiles;
+            for (int i = 0; i < finalTiles.Count; i++)
+            {
+                score += finalTiles[i].blockScore;
+            }
+
+            GameMode.Instance.AddScore(score);
+            GameMode.Instance.SetRoundOver();
+            StartCoroutine(WaitForNextRound());
+        }
         else
         {
             GameMode.Instance.SetGameOver();
         }
+    }
+
+    IEnumerator WaitForNextRound()
+    {
+        yield return Utils.GetWaitForSeconds(3);
+        GenerateRandomTarget();
+
+        GameMode.Instance.ChangeGameState(EGameStates.GAMEPLAY);
     }
 }

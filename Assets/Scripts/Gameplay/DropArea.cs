@@ -17,8 +17,8 @@ public class DropArea : Singleton<DropArea>
     public GameObject dropTilePrefab; 
      [TableMatrix]
     public Tile[,] tiles;
-
-    private List<Tile> activeTiles = new List<Tile>();
+    [HideInInspector]
+    public List<Tile> activeTiles = new List<Tile>();
     [HideInInspector]
     public float tileSize;
 
@@ -30,7 +30,48 @@ public class DropArea : Singleton<DropArea>
 
     public static event FNotify_1Params<bool> OnResolvingMatch;
     
-    
+    void OnDisable()
+    {
+        GameMode.OnGameState -= GameMode_OnGameState;
+
+    }
+
+    void OnEnable()
+    {
+        GameMode.OnGameState += GameMode_OnGameState;
+    }
+
+    private void GameMode_OnGameState(EGameStates _val1)
+    {
+        switch (_val1)
+        {
+            case EGameStates.MAIN_MENU:
+                break;
+            case EGameStates.CONNECTING:
+                break;
+            case EGameStates.RELOADING_ROUND:
+                break;
+            case EGameStates.LOADING_NEXTROUND:
+                break;
+            case EGameStates.LOADING_REMATCH:
+                break;
+            case EGameStates.GAMEPLAY:
+                ResetBoard();
+                break;
+            case EGameStates.ROUND_OVER:
+                break;
+            case EGameStates.GAME_OVER:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(_val1), _val1, null);
+        }
+    }
+
+    void ResetBoard()
+    {
+         GenerateDropArea();
+         activeTiles.Clear();
+    }
     void GenerateDropArea()
     {
        
@@ -54,7 +95,7 @@ public class DropArea : Singleton<DropArea>
                  
                 tilePos = GridPositionToWorldPosition(griPositionTmp); 
 
-                floorTileTmp= Instantiate(dropTilePrefab, tilePos, Quaternion.identity); 
+                floorTileTmp= DropTilePool.Instance.GetPooledObject(tilePos); 
                 floorTileTmp.transform.SetParent(transform);
                 floorTileTmp.GetComponent<TileFloor>().Initialize(new Vector2Int(x,y));
             }
@@ -144,6 +185,7 @@ public class DropArea : Singleton<DropArea>
         }
         
     }
+    
     bool FindMergeTiles(Tile DragTile, Vector2Int GridPosition)
     {
         Vector2Int testCoords = GridPosition;
@@ -155,6 +197,7 @@ public class DropArea : Singleton<DropArea>
             if (tiles[testCoords.x, testCoords.y]==null)continue;
 
             if (DragTile.blockType != tiles[testCoords.x, testCoords.y].blockType) continue;
+            DragTile.AbsorbOtherTile(tiles[testCoords.x, testCoords.y]);
             tiles[testCoords.x, testCoords.y].MergeTowards(GridPositionToWorldPosition(GridPosition.x, GridPosition.y),
                 DragTile.AddValue);
           RemoveTile(testCoords);

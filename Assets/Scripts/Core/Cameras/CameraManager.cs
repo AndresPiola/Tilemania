@@ -39,6 +39,8 @@ public class CameraManager : MonoBehaviour {
             case EGameStates.LOADING_REMATCH:
                 break;
             case EGameStates.GAMEPLAY:
+                LeanTween.moveX(gameObject, 0, .5f).setEase(LeanTweenType.linear);
+
                 break;
             case EGameStates.ROUND_OVER:
                 LeanTween.moveX(gameObject, 10, 1f).setEase(LeanTweenType.easeInBounce);

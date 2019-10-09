@@ -100,7 +100,7 @@ public class Utils : MonoBehaviour {
     {
         get { return _fixedUpdate; }
     }
-
+    
     public static WaitForSeconds GetWaitForSeconds(float seconds)
     {
         if (!_timeInterval.ContainsKey(seconds))

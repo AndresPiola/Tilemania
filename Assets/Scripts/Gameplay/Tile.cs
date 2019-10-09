@@ -96,6 +96,7 @@ public class Tile : SerializedMonoBehaviour
         PlayerController.OnTouchHold -= PlayerController_OnTouchHold;
         PlayerController.OnTouchRelease -= PlayerController_OnTouchRelease;
         DropArea.OnComboBonus -= DropArea_OnComboBonus;
+        GameMode.OnGameState -= GameMode_OnGameState;
     }
 
     void OnEnable()
@@ -103,9 +104,38 @@ public class Tile : SerializedMonoBehaviour
         PlayerController.OnTouchHold += PlayerController_OnTouchHold;
         PlayerController.OnTouchRelease += PlayerController_OnTouchRelease;
         DropArea.OnComboBonus += DropArea_OnComboBonus;
+        GameMode.OnGameState += GameMode_OnGameState;
     }
 
-   
+    private void GameMode_OnGameState(EGameStates _val1)
+    {
+        switch (_val1)
+        {
+            case EGameStates.MAIN_MENU:
+                break;
+            case EGameStates.CONNECTING:
+                break;
+            case EGameStates.RELOADING_ROUND:
+                break;
+            case EGameStates.LOADING_NEXTROUND:
+                break;
+            case EGameStates.LOADING_REMATCH:
+                break;
+            case EGameStates.GAMEPLAY:
+                DisableTile();
+
+                
+                break;
+            case EGameStates.ROUND_OVER:
+                break;
+            case EGameStates.GAME_OVER:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(_val1), _val1, null);
+        }
+    }
+
+     
     private void PlayerController_OnTouchRelease(FTouchInfo _val1)
     {
         if(!bSelected)return;
@@ -237,6 +267,20 @@ public class Tile : SerializedMonoBehaviour
         swapIndicators[Direction].SetValue(ColorIndex, ColorsPalette.Instance.blockColors[ColorIndex]);
         swapIndicators[Direction].value = ColorIndex;
 
+    }
+
+    public void AbsorbOtherTile(Tile OtherTile)
+    {
+        foreach (KeyValuePair<EDirections, FSwapIndicators> indicator in OtherTile.swapIndicators)
+        {
+            
+            if(indicator.Value.value<0)continue;
+
+            if(swapIndicators[indicator.Key].value<0)
+                SetSwapIndicator(indicator.Key,indicator.Value.value);
+
+        }
+       
     }
     Vector3 scaleEffect=Vector3.one*1.2f;
     public void AddValue(int PlusValue)
