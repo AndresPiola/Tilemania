@@ -34,7 +34,7 @@ public class TileFloor : MonoBehaviour
             case EGameStates.LOADING_REMATCH:
                 break;
             case EGameStates.GAMEPLAY:
-                gameObject.SetActive(false);
+                
                 break;
             case EGameStates.ROUND_OVER:
                 break;

@@ -20,12 +20,53 @@ public class GameManager : Singleton<GameManager>
 
     public static event FNotify OnTargetScoreReady;
 
+
+    private void OnDisable()
+    {
+        GameMode.OnGameState -= GameMode_OnGameState;
+    }
+
+    private void OnEnable()
+    {
+        GameMode.OnGameState += GameMode_OnGameState;
+    }
+
+    private void GameMode_OnGameState(EGameStates _val1)
+    {
+        switch (_val1)
+        {
+            case EGameStates.MAIN_MENU:
+                break;
+            case EGameStates.CONNECTING:
+                break;
+            case EGameStates.RELOADING_ROUND:
+                break;
+            case EGameStates.LOADING_NEXTROUND:
+                break;
+            case EGameStates.LOADING_REMATCH:
+                break;
+            case EGameStates.GAMEPLAY:
+                ResetGM();
+                break;
+            case EGameStates.ROUND_OVER:
+                break;
+            case EGameStates.GAME_OVER:
+                break;
+            default:
+                break;
+        }
+    }
+
     private void Start()
     {
         targetHolderRb = targetScoreHolder.GetComponent<Rigidbody2D>();
         GenerateRandomTarget();
     }
 
+    void ResetGM()
+    {
+        bTargetCompleted=false;
+    }
     void ResetTargetScoreHolder()
     {
         targetHolderRb.bodyType = RigidbodyType2D.Static;
@@ -44,7 +85,7 @@ public class GameManager : Singleton<GameManager>
     {
         ResetTargetScoreHolder();
         
-       targetScore = Random.Range(4, 10);
+       targetScore = Random.Range(4, 5);
         targetScoreText.SetText(targetScore.ToString());
         targetIcon = Random.Range(0, targetIcons.Length);
         targetIconRenderer.sprite = targetIcons[targetIcon];
@@ -94,4 +135,6 @@ public class GameManager : Singleton<GameManager>
 
         GameMode.Instance.ChangeGameState(EGameStates.GAMEPLAY);
     }
+
+     
 }

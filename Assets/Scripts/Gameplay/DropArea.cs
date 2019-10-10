@@ -14,11 +14,14 @@ public enum ECombinationType
 
 public class DropArea : Singleton<DropArea>
 {
-    public GameObject dropTilePrefab; 
+     
      [TableMatrix]
     public Tile[,] tiles;
     [HideInInspector]
     public List<Tile> activeTiles = new List<Tile>();
+    [HideInInspector]
+    public List<GameObject> activeFloorTiles=new List<GameObject>();
+
     [HideInInspector]
     public float tileSize;
 
@@ -69,8 +72,16 @@ public class DropArea : Singleton<DropArea>
 
     void ResetBoard()
     {
-         GenerateDropArea();
-         activeTiles.Clear();
+        bTargetCompleted=false;
+
+        for (int i = 0; i < activeFloorTiles.Count; i++)
+        {
+            activeFloorTiles[i].SetActive(false);
+        }
+        activeFloorTiles.Clear();
+        activeTiles.Clear();
+        GenerateDropArea();
+         
     }
     void GenerateDropArea()
     {
@@ -96,8 +107,12 @@ public class DropArea : Singleton<DropArea>
                 tilePos = GridPositionToWorldPosition(griPositionTmp); 
 
                 floorTileTmp= DropTilePool.Instance.GetPooledObject(tilePos); 
+              
                 floorTileTmp.transform.SetParent(transform);
                 floorTileTmp.GetComponent<TileFloor>().Initialize(new Vector2Int(x,y));
+                floorTileTmp.SetActive(true);
+                 activeFloorTiles.Add(floorTileTmp);
+
             }
         }
 
