@@ -3639,7 +3639,7 @@ MonoBehaviour:
   panel: {fileID: 750449286}
   showOverMessageTime: 0.2
   overMessage: {fileID: 0}
-  score: {fileID: 0}
+  score: {fileID: 342800433}
   bestScore: {fileID: 0}
   nextLevelButton: {fileID: 0}
   waitTime: 1
