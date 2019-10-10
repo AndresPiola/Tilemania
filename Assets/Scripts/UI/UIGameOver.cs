@@ -9,12 +9,14 @@ public class UIGameOver : MonoBehaviour {
 
     public RectTransform gameOverPanel;
     public Button retryButton;
-    public TextMeshProUGUI level;
+ 
     public float waitTime = 1;
+    public RectTransform gameOverRibbon;
+    public TextMeshProUGUI scoreTxt;
+    public TextMeshProUGUI bestScoreTxt;
 
 
-    
-     void FindDepedency()
+    void FindDepedency()
     {
         if(gameOverPanel==null)
         gameOverPanel = transform.GetChild(0).GetComponent<RectTransform>();
@@ -83,7 +85,7 @@ public class UIGameOver : MonoBehaviour {
     }
     IEnumerator ShowGameOver()
     {
-        level?.SetText("Level "+GameInstance.Instance.playerLevel.ToString());
+        //level?.SetText("Level "+GameInstance.Instance.playerLevel.ToString());
 
         gameOverPanel.gameObject.SetActive(true);
 
