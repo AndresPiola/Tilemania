@@ -88,8 +88,10 @@ public class UIGameOver : MonoBehaviour {
         //level?.SetText("Level "+GameInstance.Instance.playerLevel.ToString());
 
         gameOverPanel.gameObject.SetActive(true);
+        scoreTxt.SetText(GameMode.Instance.score+" pts");  
+        bestScoreTxt.SetText(GameInstance.Instance.GetBestScore() + " pts");
+        LeanTween.moveX(gameOverRibbon, 0, 1f);
 
-        
 
         yield return null;
     }
