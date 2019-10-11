@@ -65,6 +65,9 @@ public class Tile : SerializedMonoBehaviour
     public TextMeshPro valueText;
 
     [Header("Swap Indicator")]// public FSwapIndicators[] swapIndicators=new FSwapIndicators[4];
+    [Header("Swap Preview")]
+    public Transform swapPreview;
+
     public Dictionary<EDirections, FSwapIndicators> swapIndicators = new Dictionary<EDirections, FSwapIndicators>();
 
     public SpriteRenderer indicatorColor;
@@ -178,7 +181,7 @@ public class Tile : SerializedMonoBehaviour
            return;
        }
        tileFloorTmp = hit.GetComponent<TileFloor>();
-       DropArea.Instance.CheckCombination(this, tileFloorTmp.gridPosition);
+       DropArea.Instance.PreviewCombination(this, tileFloorTmp.gridPosition);
      
     }
 
@@ -308,6 +311,10 @@ public class Tile : SerializedMonoBehaviour
                 mergeIndicators[i].indicator.SetActive(false);
 
         }
+
+        LeanTween.cancel(swapPreview.gameObject);
+        swapPreview.gameObject.SetActive(false);
+
     }
 
     public void ShowPreviewCombination(Tile OtherTile,EDirections FromDirection, ECombinationType CombinationType)
@@ -316,6 +323,13 @@ public class Tile : SerializedMonoBehaviour
         {
             case ECombinationType.MERGE:
                 ShowMatch(OtherTile, FromDirection);
+                break; 
+                
+                case ECombinationType.SWAP:
+
+                swapPreview.gameObject.SetActive(true);
+                LeanTween.rotateZ(swapPreview.gameObject,360,2f).setLoopCount(0);
+
                 break;
         }
     }
@@ -337,11 +351,12 @@ public class Tile : SerializedMonoBehaviour
         bDestroyed = false;
         DisableAllIndicators();
     }
-    void DisableTile()
+    public void DisableTile()
     {
         DisableAllIndicators();
         gameObject.SetActive(false);
     }
+
 
     private void DropArea_OnComboBonus()
     {

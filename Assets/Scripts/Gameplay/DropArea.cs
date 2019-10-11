@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 
 public enum ECombinationType
 {
-    MERGE
+    NONE,MERGE,SWAP
 };
 
 public class DropArea : Singleton<DropArea>
@@ -295,12 +295,39 @@ public class DropArea : Singleton<DropArea>
 
         return false;
     }
+
+    bool CheckSwap(Tile DraggedTile,Vector2Int TestPosition)
+    {
+         if (tiles[TestPosition.x, TestPosition.y] == null) return false;
+         Vector2 posA=DraggedTile.transform.position;
+        Vector2 posB= tiles[TestPosition.x, TestPosition.y].transform.position;
+
+        EDirections joinDirection = GetDirectionToFromWorldPos(posA, posB);
+        EDirections joinDirectionOther = GetDirectionToFromWorldPos(posB, posA);
+        bool AtoBCheck = DraggedTile.GetIndicator(joinDirection).value ==
+                         tiles[TestPosition.x, TestPosition.y].blockSubColor;
+        bool BToACheck =
+            DraggedTile.blockSubColor == tiles[TestPosition.x, TestPosition.y].GetIndicator(joinDirectionOther).value;
+
+        return (AtoBCheck || BToACheck);
+           
+    }
     EDirections GetDirectionTo(Vector2Int GridPosition, Vector2Int OtherPosition)
     {
         if (GridPosition.x < OtherPosition.x) return EDirections.RIGHT;
         if (GridPosition.x > OtherPosition.x) return EDirections.LEFT;
         if (GridPosition.y < OtherPosition.y) return EDirections.UP;
         if (GridPosition.y > OtherPosition.y) return EDirections.DOWN;
+
+        return EDirections.NONE;
+
+    }
+    EDirections GetDirectionToFromWorldPos(Vector2 Position1, Vector2 OtherPosition)
+    {
+        if (Position1.x < OtherPosition.x) return EDirections.RIGHT;
+        if (Position1.x > OtherPosition.x) return EDirections.LEFT;
+        if (Position1.y < OtherPosition.y) return EDirections.UP;
+        if (Position1.y > OtherPosition.y) return EDirections.DOWN;
 
         return EDirections.NONE;
 
@@ -326,21 +353,29 @@ public class DropArea : Singleton<DropArea>
         tiles[tmpCoord.x, tmpCoord.y] = tmpTile;
         return tmpTile;
     }
-    public void CheckCombination(Tile DragTile,Vector2Int FloorCoordinate)
+    public void PreviewCombination(Tile DragTile,Vector2Int FloorCoordinate)
     {
 
         Vector2Int testCoords = FloorCoordinate;
-
+        ECombinationType combiType;
         for (int i = 0; i < checkAroundCoords.Length; i++)
         {
             testCoords = FloorCoordinate + checkAroundCoords[i];
+            combiType=ECombinationType.NONE;
             if (testCoords.x < 0 || testCoords.y < 0 || testCoords.x >= tiles.GetLength(0) || testCoords.y >= tiles.GetLength(1)) continue;
             if (tiles[testCoords.x, testCoords.y] == null) continue;
 
-            if (DragTile.blockType != tiles[testCoords.x, testCoords.y].blockType) continue;
+            if (DragTile.blockType == tiles[testCoords.x, testCoords.y].blockType) combiType=ECombinationType.MERGE;
             
+            if(CheckSwap(DragTile, testCoords))
+            {
+                combiType = ECombinationType.SWAP;
+            }
+
+            if(combiType==ECombinationType.NONE)continue;
+
             EDirections direction = FindDirectionFromTile(FloorCoordinate, testCoords.x, testCoords.y);
-            DragTile.ShowPreviewCombination(DragTile, direction, ECombinationType.MERGE);
+            DragTile.ShowPreviewCombination(DragTile, direction, combiType);
 
 
         }
