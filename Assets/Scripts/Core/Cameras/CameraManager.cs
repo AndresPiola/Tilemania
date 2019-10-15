@@ -48,8 +48,8 @@ public class CameraManager : MonoBehaviour {
 
                 break;
             case EGameStates.GAME_OVER:
-                LeanTween.moveY(gameObject, -8, .5f).setEase(LeanTweenType.easeInOutElastic);
-
+               // LeanTween.moveY(gameObject, -8, .5f).setEase(LeanTweenType.easeInOutElastic);
+               GameFeel_OnCameraShake();
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(_val1), _val1, null);

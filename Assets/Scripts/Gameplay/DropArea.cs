@@ -189,7 +189,6 @@ public class DropArea : Singleton<DropArea>
             AudioManager.Instance.PlaySound(ESfx.COMBO_MERGE);
 
             GameManager.Instance.AddComboCount();
-            OnAddNewTile?.Invoke();
             MatchingFinished();
         }
         CheckCompletedTargetScore();
@@ -238,8 +237,9 @@ public class DropArea : Singleton<DropArea>
                 DragTile.AddValue);
           RemoveTile(testCoords);
             bMergeFound = true;
+            OnAddNewTile?.Invoke();
 
-           AddComboBonus();
+            AddComboBonus();
         }
 
         return bMergeFound;

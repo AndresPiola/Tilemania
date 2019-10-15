@@ -23,9 +23,9 @@ public class UITargetCompletedMsg : SerializedMonoBehaviour
         LTSeq seq = LeanTween.sequence();
 
 
-        seq.append(LeanTween.moveY(panel, -500, .5f).setEase(LeanTweenType.easeInOutBounce));
+        seq.append(LeanTween.scale(panel, Vector3.one, .5f).setEase(LeanTweenType.easeInOutBounce));
         seq.append(1);
-        seq.append(LeanTween.moveY(panel, 0, .5f).setEase(LeanTweenType.easeInCubic));
+        seq.append(LeanTween.scale(panel, Vector3.zero, .5f).setEase(LeanTweenType.easeInCubic));
 
     }
 }

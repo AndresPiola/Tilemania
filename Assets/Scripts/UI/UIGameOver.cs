@@ -97,6 +97,7 @@ public class UIGameOver : SerializedMonoBehaviour
     IEnumerator ShowGameOver()
     {
         //level?.SetText("Level "+GameInstance.Instance.playerLevel.ToString());
+        yield return Utils.GetWaitForSeconds(waitTime);
 
         gameOverPanel.gameObject.SetActive(true);
         LeanTween.alpha(grayBackground, .5f, .2f);
