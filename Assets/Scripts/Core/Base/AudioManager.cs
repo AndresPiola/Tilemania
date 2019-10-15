@@ -44,10 +44,7 @@ public class AudioManager : Singleton<AudioManager> {
 
     }
 
-    public void PlaySound(SFX _sfx)
-    {
- 
-    }
+    
     public void PlaySound(AudioClip _soundClip)
     {
         
@@ -82,16 +79,15 @@ public class AudioManager : Singleton<AudioManager> {
         Play(audioData.goalCompleted);
 
     }
-    public void PlayPutTile()
+    
+    public void PlaySound(ESfx tilePick)
     {
-
-        Play(audioData.putTileInArea);
-
+       Play(audioData.GetAudioClip(tilePick));
     }
-
-    public void PlayComboSound()
-    { 
-        Play(audioData.comboBonus); 
+    
+    public void PlayTilePick()
+    {
+        Play(audioData.tileReturn);
     }
     public void PlayTileReturn()
     {

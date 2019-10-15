@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+
 public class PopUpText : MonoBehaviour {
 
     public TextMeshPro text;
@@ -16,7 +17,7 @@ public class PopUpText : MonoBehaviour {
 
 
 
-    public void Deactivate()
+    public virtual void Deactivate()
     {
         text.transform.localPosition = Vector3.zero;
         text.rectTransform.localScale = Vector3.one;
@@ -25,7 +26,7 @@ public class PopUpText : MonoBehaviour {
 
     }
 
-    public void ShowPopUp(string _text,float _time=.2f)
+    public virtual void ShowPopUp(string _text,float _time=.2f)
     {
         text.SetText(_text);
 

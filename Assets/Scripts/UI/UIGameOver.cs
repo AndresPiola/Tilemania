@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
  
 
-public class UIGameOver : MonoBehaviour {
+public class UIGameOver : SerializedMonoBehaviour
+{
 
     public RectTransform gameOverPanel;
     public Button retryButton;
@@ -14,7 +16,12 @@ public class UIGameOver : MonoBehaviour {
     public RectTransform gameOverRibbon;
     public TextMeshProUGUI scoreTxt;
     public TextMeshProUGUI bestScoreTxt;
+    public RectTransform grayBackground;
 
+    [Header("ShowParams")]
+    public Vector3 showPosition;
+    public float showTweenTime;
+    public LeanTweenType showEaseType;
 
     void FindDepedency()
     {
@@ -43,10 +50,14 @@ public class UIGameOver : MonoBehaviour {
         });
  
     }
-  
+    [Button]
+    public void SetGameOver()
+    {
+        GameMode.Instance.SetGameOver();
+    }
 
-     
-    
+
+
     private void GameMode_OnGameState(EGameStates _newGameState)
     {
  
@@ -88,9 +99,11 @@ public class UIGameOver : MonoBehaviour {
         //level?.SetText("Level "+GameInstance.Instance.playerLevel.ToString());
 
         gameOverPanel.gameObject.SetActive(true);
+        LeanTween.alpha(grayBackground, .5f, .2f);
+
         scoreTxt.SetText(GameMode.Instance.score+" pts");  
         bestScoreTxt.SetText(GameInstance.Instance.GetBestScore() + " pts");
-        LeanTween.moveX(gameOverRibbon, 0, 1f);
+        LeanTween.move(gameOverPanel, showPosition,showTweenTime);
 
 
         yield return null;

@@ -17,6 +17,7 @@ public class CameraManager : MonoBehaviour {
     public float RotationDamper = 2;
     public bool IsEnabled = true;
     public Vector3 finalPosition = new Vector3(0,30,-23);
+    [Header("move out path")] public Vector3[] outroWaypoints;
 
     private void OnEnable()
     {
@@ -39,14 +40,16 @@ public class CameraManager : MonoBehaviour {
             case EGameStates.LOADING_REMATCH:
                 break;
             case EGameStates.GAMEPLAY:
-                LeanTween.moveX(gameObject, 0, .5f).setEase(LeanTweenType.linear);
+                LeanTween.moveY(gameObject, 0, .5f).setEase(LeanTweenType.linear);
 
                 break;
             case EGameStates.ROUND_OVER:
-                LeanTween.moveX(gameObject, 10, 1f).setEase(LeanTweenType.easeInBounce);
+                 LeanTween.moveY(gameObject, -8, 1.5f).setEase(LeanTweenType.easeInOutBack);
 
                 break;
             case EGameStates.GAME_OVER:
+                LeanTween.moveY(gameObject, -8, .5f).setEase(LeanTweenType.easeInOutElastic);
+
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(_val1), _val1, null);

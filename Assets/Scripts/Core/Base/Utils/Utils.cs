@@ -88,7 +88,7 @@ public class Utils : MonoBehaviour {
     //////////////////////////////////////////////////////////////////////////
     ///coroutines
     static Dictionary<float, WaitForSeconds> _timeInterval = new Dictionary<float, WaitForSeconds>(100);
-
+    
     static WaitForEndOfFrame _endOfFrame = new WaitForEndOfFrame();
     public static WaitForEndOfFrame EndOfFrame
     {

@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class UIRoundOver : MonoBehaviour
+public class UIRoundOver : SerializedMonoBehaviour
 {
 
     public RectTransform panel;
@@ -14,6 +15,11 @@ public class UIRoundOver : MonoBehaviour
     public TextMeshProUGUI score;
     public TextMeshProUGUI bestScore;
     public Button nextLevelButton;
+    
+    [Header("ShowParams")]
+    public Vector3 showPosition;
+    public float showTweenTime;
+    public LeanTweenType showEaseType;
 
 
     //public TextMeshProUGUI best;
@@ -42,6 +48,11 @@ public class UIRoundOver : MonoBehaviour
         GameMode.OnGameState -= GameMode_OnGameState;
          nextLevelButton?.onClick.RemoveAllListeners();
 
+    }
+    [Button]
+    public void SetRoundOver()
+    {
+        GameMode.Instance.SetRoundOver();
     }
     private void GameMode_OnGameState(EGameStates _newGameState)
     {
@@ -99,7 +110,7 @@ public class UIRoundOver : MonoBehaviour
         bestScore?.SetText(hiScore.ToString());
 
          panel.gameObject.SetActive(true);
-         LeanTween.moveX(panel, 0, .2f);
+         LeanTween.move(panel, showPosition, showTweenTime).setEase(showEaseType);
         yield return Utils.GetWaitForSeconds(.1f);
        // LeanTween.scale(overMessage.GetComponent<RectTransform>(), Vector3.one, showOverMessageTime).setEaseOutBounce();
 

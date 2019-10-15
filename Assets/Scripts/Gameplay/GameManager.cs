@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using TMPro;
 using Random = UnityEngine.Random;
@@ -10,6 +11,7 @@ public class GameManager : Singleton<GameManager>
     public Sprite[] targetIcons;
 
     public GameObject targetScoreHolder;
+    public UITarget target;
     private Rigidbody2D targetHolderRb;
     public SpriteRenderer targetIconRenderer;
     public TextMeshPro targetScoreText;
@@ -18,8 +20,10 @@ public class GameManager : Singleton<GameManager>
     public int targetIcon;
     private bool bTargetCompleted;
 
+    public int comboCount;
     public static event FNotify OnTargetScoreReady;
-
+    public static event FNotify_1Params<int> OnCombo;
+    
 
     private void OnDisable()
     {
@@ -30,6 +34,8 @@ public class GameManager : Singleton<GameManager>
     {
         GameMode.OnGameState += GameMode_OnGameState;
     }
+
+   
 
     private void GameMode_OnGameState(EGameStates _val1)
     {
@@ -69,6 +75,8 @@ public class GameManager : Singleton<GameManager>
     }
     void ResetTargetScoreHolder()
     {
+        target.ResetBackground();
+
         targetHolderRb.bodyType = RigidbodyType2D.Static;
         targetHolderRb.velocity = Vector2.zero;
         targetHolderRb.angularVelocity = 0;
@@ -77,7 +85,11 @@ public class GameManager : Singleton<GameManager>
 
         targetScoreHolder.transform.localScale = Vector3.zero;
         LeanTween.scale(targetScoreHolder, Vector3.one, .2f).setEase(LeanTweenType.easeOutElastic);
-        LeanTween.move(targetScoreHolder, Vector2.up *4, 1.4f).setEase(LeanTweenType.easeOutElastic);
+        LeanTween.move(targetScoreHolder, Vector2.up *4, 1.4f)
+            .setEase(LeanTweenType.easeOutElastic).setOnComplete(() =>
+            {
+                target.HideBackground();
+            });
         
        
     }
@@ -93,11 +105,26 @@ public class GameManager : Singleton<GameManager>
 
     }
 
+    public void AddComboCount(int SumValue = 1)
+    {
+        comboCount += 1;
+        if(comboCount>1)
+            OnCombo?.Invoke(comboCount);
+
+        Debug.Log("combocount"+comboCount);
+
+    }
+
+    public void ResetComboCount()
+    {
+        comboCount = 0;
+    }
     public bool CheckTargetCompleted(int TestIcon, int TestValue)
     {
         if (TestIcon != targetIcon) return false;
         if ( TestValue< targetScore) return false;
         bTargetCompleted = true;
+        AudioManager.Instance.PlaySound(ESfx.TARGET_COMPLETED);
         OnTargetScoreReady?.Invoke();
         targetHolderRb.bodyType = RigidbodyType2D.Dynamic;
         targetHolderRb.AddTorque(256);
@@ -120,6 +147,7 @@ public class GameManager : Singleton<GameManager>
 
             GameMode.Instance.AddScore(score);
             GameMode.Instance.SetRoundOver();
+            AudioManager.Instance.PlaySound(ESfx.ROUND_OVER);
             StartCoroutine(WaitForNextRound());
         }
         else

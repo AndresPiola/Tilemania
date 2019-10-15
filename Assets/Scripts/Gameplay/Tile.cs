@@ -21,6 +21,10 @@ public class FSwapIndicators
 { 
     public SpriteRenderer indicator;
     public int value;
+    [HideInInspector]
+    public Color indicatorColor;
+
+    public ParticleSystem swapPreview;
     private GameObject parent;
 
     FSwapIndicators()
@@ -44,6 +48,15 @@ public class FSwapIndicators
         value = NewColor;
         parent.SetActive(true);
         indicator.color = NewRandomColor;
+        var mainPart= swapPreview.main;
+        mainPart.startColor = NewRandomColor;
+        
+    }
+
+    public void SetSwapColor(int Value)
+    {
+        var mainPart = swapPreview.main;
+        mainPart.startColor = ColorsPalette.Instance.blockColors[Value];
 
     }
 }
@@ -66,10 +79,11 @@ public class Tile : SerializedMonoBehaviour
 
     [Header("Swap Indicator")]// public FSwapIndicators[] swapIndicators=new FSwapIndicators[4];
     [Header("Swap Preview")]
-    public Transform swapPreview;
+    public Dictionary<EDirections, FSwapIndicators> swapPreview;
+     
 
     public Dictionary<EDirections, FSwapIndicators> swapIndicators = new Dictionary<EDirections, FSwapIndicators>();
-
+  
     public SpriteRenderer indicatorColor;
 
 
@@ -79,14 +93,20 @@ public class Tile : SerializedMonoBehaviour
     {
         render = GetComponent<SpriteRenderer>();
         checkBottomSize=new Vector2(0.1f, 0.1f);
+ 
     }
 
     public void SetSelected(bool IsSelected)
     {
         if(bInDropArea)return;
-         
-        bSelected = IsSelected;
+ 
+      if(IsSelected && !bSelected)
+        {
+            AudioManager.Instance.PlaySound(ESfx.TILE_PICK);
+            LeanTween.scale(gameObject, Vector3.one * .6f, .6f).setEase(LeanTweenType.punch);
 
+        } 
+        bSelected = IsSelected; 
     }
 
     private void OnDrawGizmos()
@@ -155,13 +175,18 @@ public class Tile : SerializedMonoBehaviour
             {
                 if (DropArea.Instance.TryToDropTile(this, tileFloorTmp.gridPosition))
                 {
+                    //gameObject.transform.localScale  =Vector3.one *.5f;
+
+                    LeanTween.scale(gameObject, Vector3.one * .5f, 1.0f)
+                        .setEase(LeanTweenType.punch);
+
                         return;
                 };
           
             } 
         }
 
-       AudioManager.Instance.PlayTileReturn();
+       AudioManager.Instance.PlaySound(ESfx.TILE_DROP);
         TileGenerator.Instance.ReturnTile(this);
     }
  
@@ -269,7 +294,7 @@ public class Tile : SerializedMonoBehaviour
     {
         swapIndicators[Direction].SetValue(ColorIndex, ColorsPalette.Instance.blockColors[ColorIndex]);
         swapIndicators[Direction].value = ColorIndex;
-
+          
     }
 
     public void AbsorbOtherTile(Tile OtherTile)
@@ -311,9 +336,12 @@ public class Tile : SerializedMonoBehaviour
                 mergeIndicators[i].indicator.SetActive(false);
 
         }
+        
+        swapIndicators[EDirections.DOWN].swapPreview.gameObject.SetActive(false);
+        swapIndicators[EDirections.UP].swapPreview.gameObject.SetActive(false);
+        swapIndicators[EDirections.LEFT].swapPreview.gameObject.SetActive(false);
+        swapIndicators[EDirections.RIGHT].swapPreview.gameObject.SetActive(false);
 
-        LeanTween.cancel(swapPreview.gameObject);
-        swapPreview.gameObject.SetActive(false);
 
     }
 
@@ -327,14 +355,30 @@ public class Tile : SerializedMonoBehaviour
                 
                 case ECombinationType.SWAP:
 
-                swapPreview.gameObject.SetActive(true);
-                LeanTween.rotateZ(swapPreview.gameObject,360,2f).setLoopCount(0);
+                    int swapColor = swapIndicators[FromDirection].value < 0
+                        ? blockSubColor
+                        : swapIndicators[FromDirection].value;
+
+                   
+                    if (!swapIndicators[FromDirection].swapPreview.gameObject.activeInHierarchy)
+                    {
+                        swapIndicators[FromDirection].swapPreview.gameObject.SetActive(true);
+                        swapIndicators[FromDirection].SetSwapColor(blockSubColor);
+                    }
+              
+               
 
                 break;
         }
     }
 
-
+    Vector2 EDirectionToSwapPosition(EDirections FromDir)
+    {
+        if(FromDir==EDirections.DOWN)return Vector2.down;
+        if (FromDir == EDirections.UP) return Vector2.up;
+        if (FromDir == EDirections.LEFT) return Vector2.left;
+        return Vector2.right;
+    }
     void ShowMatch(Tile otherTile, EDirections FromDirection)
     {
         for (int i = 0; i < mergeIndicators.Length; i++)
@@ -357,13 +401,18 @@ public class Tile : SerializedMonoBehaviour
         gameObject.SetActive(false);
     }
 
-
+    public void AddComboBonus(int ScoreBonus)
+    {
+        AddValue(ScoreBonus);
+        PopUpTextPool.Instance.GetPooledObjectComponent<PopUpText>(transform.position).ShowPopUp("+1");
+     
+    }
     private void DropArea_OnComboBonus()
     {
         if (!bInDropArea || bDestroyed) return;
-        AddValue(1);
+       
         PopUpTextPool.Instance.GetPooledObjectComponent<PopUpText>(transform.position).ShowPopUp("+1");
-         AudioManager.Instance.PlayComboSound();
+          
     }
 
 

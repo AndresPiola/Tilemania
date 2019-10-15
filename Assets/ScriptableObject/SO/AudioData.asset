@@ -15,14 +15,129 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 8300000, guid: c5fc8c341bf06be48b7372ba2e838628, type: 3}
+    - {fileID: 8300000, guid: a76227d05d173b14a94906e0d26469ca, type: 3}
+    - {fileID: 8300000, guid: c6a082354ba37c54fb76958f7c11c42e, type: 3}
+    - {fileID: 8300000, guid: f95b9dc93a282f143808fad8defe56aa, type: 3}
+    - {fileID: 8300000, guid: a56d1fec60416434c8c4e996bd3547ea, type: 3}
+    - {fileID: 8300000, guid: 9283f72da65aa2546a2ecfa8edf38641, type: 3}
+    - {fileID: 8300000, guid: 5153901bcb5877e4cbec7f73df8592eb, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
-  comboBonus: {fileID: 8300000, guid: cdc189d229c71af4cb2a297a6240ab0a, type: 3}
-  putTileInArea: {fileID: 8300000, guid: e95ed9949ada2194e841b8b15a99d9be, type: 3}
+    SerializationNodes:
+    - Name: gameClips
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[ESfx, Assembly-CSharp],[UnityEngine.AudioClip,
+        UnityEngine.AudioModule]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[ESfx, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 7
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 10
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 3
+    - Name: $v
+      Entry: 10
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 4
+    - Name: $v
+      Entry: 10
+      Data: 3
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 6
+    - Name: $v
+      Entry: 10
+      Data: 4
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 5
+    - Name: $v
+      Entry: 10
+      Data: 5
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 10
+      Data: 6
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   tileReturn: {fileID: 8300000, guid: 5153901bcb5877e4cbec7f73df8592eb, type: 3}
   goalCompleted: {fileID: 8300000, guid: 7006e2b21d5ceb84a95d9d568968cf57, type: 3}
   gameOver: {fileID: 8300000, guid: 496c82e4332cc1f4f8aa1c685b35c431, type: 3}

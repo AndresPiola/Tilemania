@@ -147,7 +147,7 @@ public class DropArea : Singleton<DropArea>
         DragTile.SetInPosition();
         DragTile.MoveTowards(targetPos, () =>
         {
-            AudioManager.Instance.PlayPutTile();
+            AudioManager.Instance.PlaySound(ESfx.TILE_DROP);
         });
         DragTile.SetSelected(false);
         OnTileDropped?.Invoke(DragTile);
@@ -166,6 +166,10 @@ public class DropArea : Singleton<DropArea>
             if (FindSwapTiles(DragTile, GridPosition,out var swapedPosition))
             {
                 yield return Utils.GetWaitForSeconds(.2f);
+                PopUpMergeLinkPool.Instance.GetPooledObjectComponent<UIPopUpMergeLink>(DragTile.transform.position).
+                 ShowPopUp(ECombinationType.SWAP);
+                AudioManager.Instance.PlaySound(ESfx.COMBO_SWAP);
+                GameManager.Instance.AddComboCount();
                 OnAddNewTile?.Invoke();
                 StartCoroutine(SearchForMatch(DragTile, swapedPosition));
 
@@ -173,22 +177,26 @@ public class DropArea : Singleton<DropArea>
             else
             { 
                 yield return Utils.GetWaitForSeconds(.2f);
-            
-                CheckGameOver();
+
+                MatchingFinished();
             }
         }
-        else
+        else///merge combo
         {
             yield return Utils.GetWaitForSeconds(.2f);
-           
+            PopUpMergeLinkPool.Instance.GetPooledObjectComponent<UIPopUpMergeLink>(DragTile.transform.position).
+                ShowPopUp(ECombinationType.MERGE);
+            AudioManager.Instance.PlaySound(ESfx.COMBO_MERGE);
+
+            GameManager.Instance.AddComboCount();
             OnAddNewTile?.Invoke();
-            CheckGameOver();
+            MatchingFinished();
         }
         CheckCompletedTargetScore();
 
     }
 
-    void CheckGameOver()
+    void MatchingFinished()
     {
         if (activeTiles.Count >= 5)
         {
@@ -196,9 +204,22 @@ public class DropArea : Singleton<DropArea>
         }
         else
         {
-            OnResolvingMatch?.Invoke(false);
+
+            StartCoroutine(ResolvePendingMovements());
         }
-        
+    }
+
+    IEnumerator ResolvePendingMovements()
+    {
+        int comboCount = GameManager.Instance.comboCount;
+        if(comboCount>0)
+        for (int i = 0; i < activeTiles.Count; i++)
+        {
+            activeTiles[i].AddValue(comboCount);
+        }
+        yield return Utils.GetWaitForSeconds(1);
+        GameManager.Instance.ResetComboCount();
+        OnResolvingMatch?.Invoke(false);
     }
     
     bool FindMergeTiles(Tile DragTile, Vector2Int GridPosition)
@@ -298,17 +319,19 @@ public class DropArea : Singleton<DropArea>
 
     bool CheckSwap(Tile DraggedTile,Vector2Int TestPosition)
     {
+ 
          if (tiles[TestPosition.x, TestPosition.y] == null) return false;
          Vector2 posA=DraggedTile.transform.position;
         Vector2 posB= tiles[TestPosition.x, TestPosition.y].transform.position;
 
         EDirections joinDirection = GetDirectionToFromWorldPos(posA, posB);
         EDirections joinDirectionOther = GetDirectionToFromWorldPos(posB, posA);
+ 
         bool AtoBCheck = DraggedTile.GetIndicator(joinDirection).value ==
                          tiles[TestPosition.x, TestPosition.y].blockSubColor;
         bool BToACheck =
             DraggedTile.blockSubColor == tiles[TestPosition.x, TestPosition.y].GetIndicator(joinDirectionOther).value;
-
+   
         return (AtoBCheck || BToACheck);
            
     }
@@ -324,10 +347,19 @@ public class DropArea : Singleton<DropArea>
     }
     EDirections GetDirectionToFromWorldPos(Vector2 Position1, Vector2 OtherPosition)
     {
+        if (Math.Abs(Position1.x - OtherPosition.x) > Math.Abs(Position1.y - OtherPosition.y))
+        {
         if (Position1.x < OtherPosition.x) return EDirections.RIGHT;
         if (Position1.x > OtherPosition.x) return EDirections.LEFT;
-        if (Position1.y < OtherPosition.y) return EDirections.UP;
-        if (Position1.y > OtherPosition.y) return EDirections.DOWN;
+        }
+        else
+        {
+             if (Position1.y < OtherPosition.y) return EDirections.UP;
+        if (Position1.y > OtherPosition.y) return EDirections.DOWN; 
+
+        }
+       
+      
 
         return EDirections.NONE;
 
@@ -365,13 +397,11 @@ public class DropArea : Singleton<DropArea>
             if (testCoords.x < 0 || testCoords.y < 0 || testCoords.x >= tiles.GetLength(0) || testCoords.y >= tiles.GetLength(1)) continue;
             if (tiles[testCoords.x, testCoords.y] == null) continue;
 
-            if (DragTile.blockType == tiles[testCoords.x, testCoords.y].blockType) combiType=ECombinationType.MERGE;
-            
-            if(CheckSwap(DragTile, testCoords))
-            {
+            if (DragTile.blockType == tiles[testCoords.x, testCoords.y].blockType) combiType = ECombinationType.MERGE;
+            else
+            if(CheckSwap(DragTile, testCoords)) 
                 combiType = ECombinationType.SWAP;
-            }
-
+          
             if(combiType==ECombinationType.NONE)continue;
 
             EDirections direction = FindDirectionFromTile(FloorCoordinate, testCoords.x, testCoords.y);
