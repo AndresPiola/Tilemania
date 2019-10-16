@@ -163,7 +163,7 @@ public class DropArea : Singleton<DropArea>
         if (!FindMergeTiles(DragTile, GridPosition))
         {
             yield return Utils.GetWaitForSeconds(.2f);
-            if (FindSwapTiles(DragTile, GridPosition,out var swapedPosition))
+            if (FindSwapTiles(DragTile, GridPosition,out Tile OtherTile,out var swapedPosition))
             {
                 yield return Utils.GetWaitForSeconds(.2f);
                 PopUpMergeLinkPool.Instance.GetPooledObjectComponent<UIPopUpMergeLink>(DragTile.transform.position).
@@ -172,7 +172,9 @@ public class DropArea : Singleton<DropArea>
                 GameManager.Instance.AddComboCount();
                 OnAddNewTile?.Invoke();
                 StartCoroutine(SearchForMatch(DragTile, swapedPosition));
+                StartCoroutine(SearchForMatch(OtherTile, GridPosition));
 
+                
             }
             else
             { 
@@ -189,7 +191,7 @@ public class DropArea : Singleton<DropArea>
             AudioManager.Instance.PlaySound(ESfx.COMBO_MERGE);
 
             GameManager.Instance.AddComboCount();
-            MatchingFinished();
+            StartCoroutine(SearchForMatch(DragTile, GridPosition));
         }
         CheckCompletedTargetScore();
 
@@ -211,11 +213,16 @@ public class DropArea : Singleton<DropArea>
     IEnumerator ResolvePendingMovements()
     {
         int comboCount = GameManager.Instance.comboCount;
-        if(comboCount>0)
-        for (int i = 0; i < activeTiles.Count; i++)
+        if (comboCount > 1)
         {
-            activeTiles[i].AddValue(comboCount);
+            yield return Utils.GetWaitForSeconds(1);
+            for (int i = 0; i < activeTiles.Count; i++)
+            {
+                activeTiles[i].AddValue(comboCount);
+                yield return Utils.GetWaitForSeconds(1.2f);
+            }
         }
+        
         yield return Utils.GetWaitForSeconds(1);
         GameManager.Instance.ResetComboCount();
         OnResolvingMatch?.Invoke(false);
@@ -239,31 +246,25 @@ public class DropArea : Singleton<DropArea>
             bMergeFound = true;
             OnAddNewTile?.Invoke();
 
-            AddComboBonus();
+            CheckCompletedTargetScore();
         }
 
         return bMergeFound;
     }
 
-    void AddComboBonus()
-    {
-        OnComboBonus.Invoke();
-        CheckCompletedTargetScore();
-
-
-    }
+     
     void RemoveTile(Vector2Int GridPosition)
     {
         activeTiles.Remove(tiles[GridPosition.x, GridPosition.y]);
         tiles[GridPosition.x, GridPosition.y] = null; 
     }
-    bool FindSwapTiles(Tile DragTile, Vector2Int GridPosition,out Vector2Int NewGridPosition)
+    bool FindSwapTiles(Tile DragTile, Vector2Int GridPosition,out Tile OtherTile, out Vector2Int NewGridPosition)
     {
         Vector2Int testCoords = GridPosition;
-        bool bSwapFound = false;
+        bool bDoOnce = false;
         NewGridPosition = GridPosition;
         EDirections otherDirection;
-
+        OtherTile = null;
         for (int i = 0; i < checkAroundCoords.Length; i++)
         {
             testCoords = GridPosition + checkAroundCoords[i];
@@ -279,24 +280,26 @@ public class DropArea : Singleton<DropArea>
             if (AtoBCheck || BToACheck)
             {
                 
-                if (!bSwapFound)
+                if (!bDoOnce)
                 {
-                     SwapTiles(GridPosition,testCoords);
+                    OtherTile =  SwapTiles(GridPosition,testCoords);
                      NewGridPosition = testCoords;
+                     DragTile.AddValue(1);
+                     OtherTile.AddValue(1);
 
                 }
                 
                 if(AtoBCheck) DragTile.RemoveSwapIndicator(joinDirection);
                 if (BToACheck) tiles[testCoords.x, testCoords.y].RemoveSwapIndicator(joinDirectionOther);
 
+                
                 //  Debug.Log(GridPosition.ToString()+"  "+ DragTile.blockType + "  " + tiles[testCoords.x, testCoords.y].blockSubColor);
-                bSwapFound = true;
-                ReorderTiles();
-                AddComboBonus();
+                bDoOnce = true;
+                ReorderTiles(); 
             }
           
         } 
-        return bSwapFound;
+        return bDoOnce;
 
     }
 
@@ -381,9 +384,10 @@ public class DropArea : Singleton<DropArea>
     {
         Vector2Int tmpCoord = TileB;
         Tile tmpTile = tiles[TileA.x, TileA.y];
+        Tile Other = tiles[TileB.x, TileB.y];
         tiles[TileA.x, TileA.y] = tiles[TileB.x, TileB.y];
         tiles[tmpCoord.x, tmpCoord.y] = tmpTile;
-        return tmpTile;
+        return Other;
     }
     public void PreviewCombination(Tile DragTile,Vector2Int FloorCoordinate)
     {

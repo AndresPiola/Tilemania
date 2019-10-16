@@ -118,7 +118,7 @@ public class Tile : SerializedMonoBehaviour
     {
         PlayerController.OnTouchHold -= PlayerController_OnTouchHold;
         PlayerController.OnTouchRelease -= PlayerController_OnTouchRelease;
-        DropArea.OnComboBonus -= DropArea_OnComboBonus;
+   
         GameMode.OnGameState -= GameMode_OnGameState;
     }
 
@@ -126,7 +126,7 @@ public class Tile : SerializedMonoBehaviour
     {
         PlayerController.OnTouchHold += PlayerController_OnTouchHold;
         PlayerController.OnTouchRelease += PlayerController_OnTouchRelease;
-        DropArea.OnComboBonus += DropArea_OnComboBonus;
+    
         GameMode.OnGameState += GameMode_OnGameState;
     }
 
@@ -316,7 +316,7 @@ public class Tile : SerializedMonoBehaviour
         blockScore += PlusValue;
         valueText?.SetText(blockScore.ToString());
         LeanTween.scale(valueText.gameObject, scaleEffect, 0.2f).setEasePunch();
-
+        PopUpTextPool.Instance.GetPooledObjectComponent<PopUpText>(transform.position).ShowPopUp("+1");
 
     }
 
@@ -401,19 +401,8 @@ public class Tile : SerializedMonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void AddComboBonus(int ScoreBonus)
-    {
-        AddValue(ScoreBonus);
-        PopUpTextPool.Instance.GetPooledObjectComponent<PopUpText>(transform.position).ShowPopUp("+1");
-     
-    }
-    private void DropArea_OnComboBonus()
-    {
-        if (!bInDropArea || bDestroyed) return;
-       
-        PopUpTextPool.Instance.GetPooledObjectComponent<PopUpText>(transform.position).ShowPopUp("+1");
-          
-    }
+    
+   
 
 
 
