@@ -104,7 +104,8 @@ public class UIRoundOver : SerializedMonoBehaviour
         yield return Utils.GetWaitForSeconds(waitTime);
         panel.gameObject.SetActive(true);
        int hiScore  ;
-       score.SetText(GameMode.Instance.GetScore(out hiScore).ToString()); ;
+       GameMode.Instance.GetScore(out hiScore);
+       score.SetText(GameManager.Instance.roundScore.ToString()); ;
 
         float percent = GameMode.Instance.GetAdvancePercent();
         bestScore?.SetText(hiScore.ToString());

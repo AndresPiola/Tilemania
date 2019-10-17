@@ -85,6 +85,7 @@ public class Tile : SerializedMonoBehaviour
     public Dictionary<EDirections, FSwapIndicators> swapIndicators = new Dictionary<EDirections, FSwapIndicators>();
   
     public SpriteRenderer indicatorColor;
+ 
 
 
     private Vector2 checkBottomSize;
@@ -95,6 +96,8 @@ public class Tile : SerializedMonoBehaviour
         checkBottomSize=new Vector2(0.1f, 0.1f);
  
     }
+
+     
 
     public void SetSelected(bool IsSelected)
     {
@@ -118,7 +121,8 @@ public class Tile : SerializedMonoBehaviour
     {
         PlayerController.OnTouchHold -= PlayerController_OnTouchHold;
         PlayerController.OnTouchRelease -= PlayerController_OnTouchRelease;
-   
+       
+
         GameMode.OnGameState -= GameMode_OnGameState;
     }
 
@@ -126,10 +130,11 @@ public class Tile : SerializedMonoBehaviour
     {
         PlayerController.OnTouchHold += PlayerController_OnTouchHold;
         PlayerController.OnTouchRelease += PlayerController_OnTouchRelease;
-    
+
         GameMode.OnGameState += GameMode_OnGameState;
     }
 
+ 
     private void GameMode_OnGameState(EGameStates _val1)
     {
         switch (_val1)
@@ -145,9 +150,7 @@ public class Tile : SerializedMonoBehaviour
             case EGameStates.LOADING_REMATCH:
                 break;
             case EGameStates.GAMEPLAY:
-                DisableTile();
-
-                
+                DisableTile(); 
                 break;
             case EGameStates.ROUND_OVER:
                 break;
@@ -210,13 +213,13 @@ public class Tile : SerializedMonoBehaviour
      
     }
 
-    public void MergeTowards(Vector2 TargetPosition,FNotify_1Params<int> OnMergeFinished)
+    public void MergeTowards(Vector2 TargetPosition,FNotify_2Params<int,bool> OnMergeFinished)
     {
         LeanTween.cancel(gameObject);
         bDestroyed = true;
         LeanTween.move(gameObject, TargetPosition, 0.2f).setEase(LeanTweenType.easeInExpo).setOnComplete(() =>
         {
-            OnMergeFinished?.Invoke(blockScore);
+            OnMergeFinished?.Invoke(blockScore,false);
             DisableTile();
         });
 
@@ -311,12 +314,13 @@ public class Tile : SerializedMonoBehaviour
        
     }
     Vector3 scaleEffect=Vector3.one*1.2f;
-    public void AddValue(int PlusValue)
+    public void AddValue(int PlusValue,bool bShowPopUp=true)
     {
         blockScore += PlusValue;
         valueText?.SetText(blockScore.ToString());
         LeanTween.scale(valueText.gameObject, scaleEffect, 0.2f).setEasePunch();
-        PopUpTextPool.Instance.GetPooledObjectComponent<PopUpText>(transform.position).ShowPopUp("+1");
+        if(bShowPopUp)
+            PopUpTextPool.Instance.GetPooledObjectComponent<PopUpText>(transform.position).ShowPopUp("+"+ PlusValue.ToString());
 
     }
 

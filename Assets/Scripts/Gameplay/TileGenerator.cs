@@ -77,6 +77,8 @@ public class TileGenerator : Singleton<TileGenerator>
         for (int i = 0; i < 5; i++)
         {
             tileRef= TilesPool.Instance.GetPooledObject( );
+            tileRef.name = "tile" + i;
+
             tileRef.GetComponent<Tile>().Initialize();
             freeTiles.Add(tileRef.GetComponent<Tile>()); 
         }

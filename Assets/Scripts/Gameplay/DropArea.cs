@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
@@ -152,11 +153,65 @@ public class DropArea : Singleton<DropArea>
         DragTile.SetSelected(false);
         OnTileDropped?.Invoke(DragTile);
         OnResolvingMatch?.Invoke(true);
-        StartCoroutine(SearchForMatch(DragTile, GridPosition)) ;
+        QueueSearch(DragTile, GridPosition);
+
+        ExecutePendingSearch();
         return true;
 
     }
+  public List<Action > searchQueue=new List<Action>();
+  //  public List<Func<Task>> searchQueue = new List<Func<Task>>();
 
+    public void QueueSearch(Tile DragTile, Vector2Int GridPosition)
+    {
+        if(searchQueue==null)
+            searchQueue = new List<Action>();
+         searchQueue.Add(() => { SearchForMatch(DragTile, GridPosition);});
+          
+    }
+     
+
+    public async Task SearchForMatch (Tile DragTile, Vector2Int GridPosition)
+    { 
+      //  Debug.Log("SearchForMatch"+ DragTile.name+"  "+GridPosition.ToString());
+        await Task.Delay(100);
+
+        if (FindMergeTiles(DragTile, GridPosition))
+        {
+            await Task.Delay(200);
+            PopUpMergeLinkPool.Instance.GetPooledObjectComponent<UIPopUpMergeLink>(DragTile.transform.position).
+                ShowPopUp(ECombinationType.MERGE);
+            AudioManager.Instance.PlaySound(ESfx.COMBO_MERGE);
+
+            GameManager.Instance.AddComboCount(DragTile.transform.position);
+            QueueSearch(DragTile, GridPosition);
+        }
+        else //try to find swaps
+        {
+            await Task.Delay(200);
+            if (FindSwapTiles(DragTile, GridPosition, out Tile OtherTile, out var swapedPosition))
+            {
+                await Task.Delay(200);
+                PopUpMergeLinkPool.Instance.GetPooledObjectComponent<UIPopUpMergeLink>(DragTile.transform.position).
+                    ShowPopUp(ECombinationType.SWAP);
+                AudioManager.Instance.PlaySound(ESfx.COMBO_SWAP);
+                GameManager.Instance.AddComboCount(DragTile.transform.position);
+                OnAddNewTile?.Invoke();
+                QueueSearch(DragTile, swapedPosition);
+                QueueSearch(OtherTile, GridPosition);
+
+
+            }
+           
+        }
+        await Task.Delay(201);
+        
+        CheckCompletedTargetScore();
+        ExecutePendingSearch();
+
+
+    }
+    /*
     IEnumerator SearchForMatch(Tile DragTile, Vector2Int GridPosition)
     {
         yield return Utils.GetWaitForSeconds(.1f);
@@ -171,9 +226,9 @@ public class DropArea : Singleton<DropArea>
                 AudioManager.Instance.PlaySound(ESfx.COMBO_SWAP);
                 GameManager.Instance.AddComboCount();
                 OnAddNewTile?.Invoke();
-                StartCoroutine(SearchForMatch(DragTile, swapedPosition));
-                StartCoroutine(SearchForMatch(OtherTile, GridPosition));
-
+                AddToQueue(SearchForMatch(DragTile, swapedPosition)) ;
+                AddToQueue(SearchForMatch(OtherTile, GridPosition)) ;
+                 
                 
             }
             else
@@ -191,41 +246,62 @@ public class DropArea : Singleton<DropArea>
             AudioManager.Instance.PlaySound(ESfx.COMBO_MERGE);
 
             GameManager.Instance.AddComboCount();
-            StartCoroutine(SearchForMatch(DragTile, GridPosition));
+            AddToQueue(SearchForMatch(DragTile, GridPosition)); 
         }
         CheckCompletedTargetScore();
 
     }
+    */
+    void ExecutePendingSearch()
+    { 
+        for (int i = 0; i < searchQueue.Count; i++)
+        {
+            if (searchQueue[i] != null)
+            {
+                Debug.Log("execute pending"+ searchQueue[i]);
+                searchQueue[i]( );
+                searchQueue[i] = null;
+                return;
+                
+            }
+             
+        }
 
+        _= ResolvePendingMovements();
+
+    }
     void MatchingFinished()
     {
         if (activeTiles.Count >= 5)
         {
             GameManager.Instance.CheckRoundResults();
         }
-        else
-        {
-
-            StartCoroutine(ResolvePendingMovements());
-        }
+        
     }
 
-    IEnumerator ResolvePendingMovements()
+    async  Task ResolvePendingMovements()
     {
+        Debug.Log("Called resolved");
         int comboCount = GameManager.Instance.comboCount;
         if (comboCount > 1)
         {
-            yield return Utils.GetWaitForSeconds(1);
+            await Task.Delay(100);
+
             for (int i = 0; i < activeTiles.Count; i++)
             {
                 activeTiles[i].AddValue(comboCount);
-                yield return Utils.GetWaitForSeconds(1.2f);
+                AudioManager.Instance.PlaySound(ESfx.COMBO_COUNT);
+                await Task.Delay(200);
+
             }
         }
-        
-        yield return Utils.GetWaitForSeconds(1);
+        searchQueue.Clear();
+
+      //  await Task.Delay(1000);
         GameManager.Instance.ResetComboCount();
-        OnResolvingMatch?.Invoke(false);
+            OnResolvingMatch?.Invoke(false);
+        MatchingFinished();
+
     }
     
     bool FindMergeTiles(Tile DragTile, Vector2Int GridPosition)

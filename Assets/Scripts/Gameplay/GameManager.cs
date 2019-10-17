@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using TMPro;
@@ -19,7 +20,9 @@ public class GameManager : Singleton<GameManager>
     public int targetScore;
     public int targetIcon;
     private bool bTargetCompleted;
-
+    [HideInInspector]
+    public int roundScore;
+    public  int currentRound;
     public int comboCount;
     public static event FNotify OnTargetScoreReady;
     public static event FNotify_1Params<int> OnCombo;
@@ -97,7 +100,9 @@ public class GameManager : Singleton<GameManager>
     {
         ResetTargetScoreHolder();
         
-       targetScore = Random.Range(4, 5);
+       targetScore = Random.Range(4, 5)+currentRound;
+       targetScore = Math.Min(12, targetScore);
+
         targetScoreText.SetText(targetScore.ToString());
         targetIcon = Random.Range(0, targetIcons.Length);
         targetIconRenderer.sprite = targetIcons[targetIcon];
@@ -105,14 +110,17 @@ public class GameManager : Singleton<GameManager>
 
     }
 
-    public void AddComboCount(int SumValue = 1)
+    public void AddComboCount(Vector3 PopUpPosition,int SumValue = 1)
     {
         comboCount += 1;
-        if(comboCount>1)
+        if (comboCount > 1)
+        {
             OnCombo?.Invoke(comboCount);
-
-        Debug.Log("combocount"+comboCount);
-
+               PopUpComboPool.Instance.GetPooledObjectComponent<UIPopUpCombo>().ShowPopUp(comboCount);
+      
+        }
+           
+         
     }
 
     public void ResetComboCount()
@@ -138,28 +146,32 @@ public class GameManager : Singleton<GameManager>
     {
         if (bTargetCompleted)
         {
-            int score = 0;
+            roundScore = 0;
             List<Tile> finalTiles = DropArea.Instance.activeTiles;
             for (int i = 0; i < finalTiles.Count; i++)
             {
-                score += finalTiles[i].blockScore;
+                roundScore += finalTiles[i].blockScore;
             }
 
-            GameMode.Instance.AddScore(score);
+            GameMode.Instance.AddScore(roundScore);
             GameMode.Instance.SetRoundOver();
+
             AudioManager.Instance.PlaySound(ESfx.ROUND_OVER);
-            StartCoroutine(WaitForNextRound());
+            WaitForNextRound().RunSynchronously();
+
         }
         else
         {
+            AudioManager.Instance.PlaySound(ESfx.GAME_OVER);
             GameMode.Instance.SetGameOver();
         }
     }
-
-    IEnumerator WaitForNextRound()
+    public  async  Task WaitForNextRound()
     {
-        yield return Utils.GetWaitForSeconds(3);
-        GenerateRandomTarget();
+         
+        await Task.Delay(3000);
+        currentRound++;
+          GenerateRandomTarget();
 
         GameMode.Instance.ChangeGameState(EGameStates.GAMEPLAY);
     }

@@ -12,10 +12,11 @@ using System.Collections.Generic;
      TILE_RETURN,
      COMBO_MERGE,
      COMBO_SWAP,
-     TARGET_COMPLETED,
+     COMBO_COUNT,
+     TARGET_COMPLETED, 
 
-
-     ROUND_OVER
+     ROUND_OVER,
+     GAME_OVER
  };
 
 
@@ -24,24 +25,7 @@ public class AudioData : SingletonScriptableObject<AudioData>
 {
     
     public Dictionary<ESfx, AudioClip> gameClips = new Dictionary<ESfx, AudioClip>();
-
-
-    [Header("Gameplay")]
      
-    public AudioClip tileReturn;
-
-    [Header("Gameplay Events")]
-
-    public AudioClip goalCompleted;
-    public AudioClip gameOver;
-    [Header("items")]
-    public AudioClip[] itemSounds ;
-
-    
-    [Header("Music")]
-    public AudioClip winMusic;
-    public AudioClip firstPositionWinMusic;
-    public AudioClip loseMusic;
 
     public AudioClip GetAudioClip(ESfx Key)
     {

@@ -23,6 +23,8 @@ public class UIGameOver : SerializedMonoBehaviour
     public float showTweenTime;
     public LeanTweenType showEaseType;
 
+    public RectTransform buttonsPanel;
+
     void FindDepedency()
     {
         if(gameOverPanel==null)
@@ -105,7 +107,8 @@ public class UIGameOver : SerializedMonoBehaviour
         scoreTxt.SetText(GameMode.Instance.score+" pts");  
         bestScoreTxt.SetText(GameInstance.Instance.GetBestScore() + " pts");
         LeanTween.move(gameOverPanel, showPosition,showTweenTime);
-
+        LeanTween.moveY(buttonsPanel, 0, showTweenTime);
+        
 
         yield return null;
     }

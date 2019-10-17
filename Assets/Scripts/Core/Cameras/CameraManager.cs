@@ -65,11 +65,13 @@ public class CameraManager : MonoBehaviour {
     }
     private void GameFeel_OnCameraShake()
     {
-       StartCoroutine(Shake());
+      // StartCoroutine(Shake());
 
     }
     IEnumerator Shake()
     {
+       yield return null;
+
         var elapsed = 0.0f;
         var camT = main.transform;
         var originalCamRotation = camT.rotation.eulerAngles;
@@ -80,8 +82,7 @@ public class CameraManager : MonoBehaviour {
         Vector3 oldRotation = Vector3.zero;
         while (elapsed < Duration)
         {
-            print(elapsed);
-
+           
             elapsed += Time.deltaTime;
             var percentComplete = elapsed / Duration;
             var damper = ShakeCurve.Evaluate(percentComplete) * distanceDamper;

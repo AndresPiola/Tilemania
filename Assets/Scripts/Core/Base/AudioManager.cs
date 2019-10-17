@@ -60,37 +60,12 @@ public class AudioManager : Singleton<AudioManager> {
         audioSrc.PlayOneShot(_clip);
     }
 
-    public void PlayWinMusic()
-    {
-
-        Play(audioData.winMusic);
-
-    }
-    public void PlayLoseSfx()
-    {
-
-        Play(audioData.gameOver);
-
-    }
-
-    public void PlayGoalSound()
-    {
-
-        Play(audioData.goalCompleted);
-
-    }
+     
     
     public void PlaySound(ESfx tilePick)
     {
        Play(audioData.GetAudioClip(tilePick));
     }
     
-    public void PlayTilePick()
-    {
-        Play(audioData.tileReturn);
-    }
-    public void PlayTileReturn()
-    {
-        Play(audioData.tileReturn);
-    }
+   
 }
