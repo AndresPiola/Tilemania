@@ -5,7 +5,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
-public  enum EButtonActions { MainMenu,MainGame}
+public  enum EButtonActions { MainMenu,MainGame,Tutorial}
 public class UIMenuButton : SerializedMonoBehaviour
 {
     public EButtonActions buttonAction;

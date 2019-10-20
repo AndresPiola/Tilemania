@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TouchCOntroller : MonoBehaviour
 {
-    private bool bTouchDisabled;
+    public bool bTouchDisabled;
 
     void OnDisable()
     {

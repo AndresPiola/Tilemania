@@ -242,18 +242,79 @@ public class Tile : SerializedMonoBehaviour
       
         GenerateRandomValues(); 
     }
-   
+
+    public void Initialize(int BlockTypeIndex, int BlockScoreValue, int BlockSubColorIndex, EDirections ColorDirection, int DirectionColor)
+    {
+        
+        ResetTile();
+        SetValues(BlockTypeIndex,BlockScoreValue, BlockSubColorIndex,ColorDirection,DirectionColor);
+    }
+    public void Initialize(int BlockTypeIndex, int BlockScoreValue, int BlockSubColorIndex, TileData ColorDirection)
+    {
+        ResetTile();
+        SetValues(BlockTypeIndex, BlockScoreValue, BlockSubColorIndex, ColorDirection.sideColor);
+
+    }
+
+    private void SetValues(int BlockTypeIndex, int BlockScoreValue, int BlockSubColorIndex, Dictionary<EDirections, int> ColorDirection)
+    {
+        int numberColors = ColorsPalette.Instance.blockColors.Length;
+
+        blockType = BlockTypeIndex;
+
+        blockScore = BlockScoreValue;
+        valueText?.SetText(blockScore.ToString());
+
+        ///generate subcolor
+        blockSubColor = BlockSubColorIndex;
+        indicatorColor.color = ColorsPalette.Instance.blockColors[blockSubColor];
+        indicatorColor.sprite = blockIcon[blockType];
+
+
+        foreach (KeyValuePair<EDirections,int> pair in ColorDirection)
+        {
+             if (pair.Key != EDirections.NONE)
+             {
+                 SetSwapIndicator(pair.Key, pair.Value);
+             }
+
+        }
+       
+    }
+
     public void SetInPosition()
     {
         bInDropArea = true;
         bSelected = false; 
     }
 
+    public void SetValues(int BlockTypeIndex,int BlockScoreValue,int BlockSubColorIndex,EDirections ColorDirection,int DirectionColor)
+    {
+        int numberColors = ColorsPalette.Instance.blockColors.Length;
+
+        blockType = BlockTypeIndex;
+
+        blockScore = BlockScoreValue;
+        valueText?.SetText(blockScore.ToString());
+         
+        ///generate subcolor
+        blockSubColor = BlockSubColorIndex;
+        indicatorColor.color = ColorsPalette.Instance.blockColors[blockSubColor];
+        indicatorColor.sprite = blockIcon[blockType];
+
+      
+            if (ColorDirection != EDirections.NONE)
+            {
+                SetSwapIndicator(ColorDirection, DirectionColor);
+            }
+ 
+    }
     public void GenerateRandomValues()
     {
         int numberColors = ColorsPalette.Instance.blockColors.Length;
 
-        blockType =Random.Range(0, 5); 
+        blockType =Random.Range(0, 5);
+       // blockType = 1;
 
         blockScore = Random.Range(1, 7); 
         valueText?.SetText(blockScore.ToString());
@@ -360,19 +421,18 @@ public class Tile : SerializedMonoBehaviour
                 case ECombinationType.SWAP:
 
                     int swapColor = swapIndicators[FromDirection].value < 0
-                        ? blockSubColor
-                        : swapIndicators[FromDirection].value;
+                        ?   blockSubColor:swapIndicators[FromDirection].value;
 
                    
                     if (!swapIndicators[FromDirection].swapPreview.gameObject.activeInHierarchy)
                     {
                         swapIndicators[FromDirection].swapPreview.gameObject.SetActive(true);
-                        swapIndicators[FromDirection].SetSwapColor(blockSubColor);
+                        swapIndicators[FromDirection].SetSwapColor(swapColor);
                     }
               
                
 
-                break;
+                    break;
         }
     }
 
@@ -405,9 +465,6 @@ public class Tile : SerializedMonoBehaviour
         gameObject.SetActive(false);
     }
 
-    
+
    
-
-
-
 }

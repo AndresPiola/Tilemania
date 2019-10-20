@@ -24,7 +24,10 @@ public class MainMenuManager : Singleton<MainMenuManager>
                 SceneManager.LoadScene("Main");
 
                 break;
-                
+            case EButtonActions.Tutorial:
+                SceneManager.LoadScene("MainTutorial");
+
+                break;
         }
     }
 

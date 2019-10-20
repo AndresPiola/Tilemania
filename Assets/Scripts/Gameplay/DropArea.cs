@@ -34,13 +34,13 @@ public class DropArea : Singleton<DropArea>
 
     public static event FNotify_1Params<bool> OnResolvingMatch;
     
-    void OnDisable()
+    public virtual void OnDisable()
     {
         GameMode.OnGameState -= GameMode_OnGameState;
 
     }
 
-    void OnEnable()
+    public virtual void OnEnable()
     {
         GameMode.OnGameState += GameMode_OnGameState;
     }
@@ -84,16 +84,12 @@ public class DropArea : Singleton<DropArea>
         GenerateDropArea();
          
     }
-    void GenerateDropArea()
-    {
-       
-        Vector2 tilePos = Vector2.zero;
+    public virtual void GenerateDropArea()
+    { 
         tileSize = 1.28f;// GameConfig.Instance.tileSize;
-    
-        GameObject floorTileTmp;
+     
         tiles= new Tile[4,2];
-        Vector2Int griPositionTmp=Vector2Int.zero;
-
+       
         int randomSpace = Random.Range(0, 3);
 
         for (int y = 0; y < 2; y++)
@@ -102,21 +98,38 @@ public class DropArea : Singleton<DropArea>
             {
                 if(y==1 && randomSpace==x)continue;
 
-                griPositionTmp.x = x;
-                griPositionTmp.y = y;
-                 
-                tilePos = GridPositionToWorldPosition(griPositionTmp); 
-
-                floorTileTmp= DropTilePool.Instance.GetPooledObject(tilePos); 
-              
-                floorTileTmp.transform.SetParent(transform);
-                floorTileTmp.GetComponent<TileFloor>().Initialize(new Vector2Int(x,y));
-                floorTileTmp.SetActive(true);
-                 activeFloorTiles.Add(floorTileTmp);
+               CreateTile(x,y);
 
             }
         }
 
+        CallDropZoneReady();
+
+    }
+
+    public void CreateTile(int X, int Y,bool bUseAnimation=false)
+    {
+        Vector2 tilePos = Vector2.zero;
+        Vector2Int griPositionTmp = new Vector2Int(X,Y);
+        TileFloor floorTileTmp;
+        tilePos = GridPositionToWorldPosition(griPositionTmp);
+
+        floorTileTmp = DropTilePool.Instance.GetPooledObjectComponent<TileFloor>(tilePos);
+
+        floorTileTmp.transform.SetParent(transform);
+        floorTileTmp.Initialize(griPositionTmp);
+        floorTileTmp.gameObject.SetActive(true);
+        if (bUseAnimation)
+        {
+            floorTileTmp.transform.localScale=Vector3.zero;
+            LeanTween.scale(floorTileTmp.gameObject, Vector3.one, .4f)
+                .setEase(LeanTweenType.easeOutBounce);
+        }
+        activeFloorTiles.Add(floorTileTmp.gameObject);
+
+    }
+    public void CallDropZoneReady()
+    {
         OnDropZoneReady?.Invoke();
     }
 
@@ -178,6 +191,7 @@ public class DropArea : Singleton<DropArea>
 
         if (FindMergeTiles(DragTile, GridPosition))
         {
+ 
             await Task.Delay(200);
             PopUpMergeLinkPool.Instance.GetPooledObjectComponent<UIPopUpMergeLink>(DragTile.transform.position).
                 ShowPopUp(ECombinationType.MERGE);
@@ -253,12 +267,15 @@ public class DropArea : Singleton<DropArea>
     }
     */
     void ExecutePendingSearch()
-    { 
+    {
+      
         for (int i = 0; i < searchQueue.Count; i++)
         {
+           
+
             if (searchQueue[i] != null)
             {
-                Debug.Log("execute pending"+ searchQueue[i]);
+               // Debug.Log("execute pending"+ searchQueue[i]);
                 searchQueue[i]( );
                 searchQueue[i] = null;
                 return;
@@ -279,10 +296,12 @@ public class DropArea : Singleton<DropArea>
         
     }
 
+    public int comboCount;
     async  Task ResolvePendingMovements()
     {
-        Debug.Log("Called resolved");
-        int comboCount = GameManager.Instance.comboCount;
+ 
+        comboCount = GameManager.Instance.comboCount;
+
         if (comboCount > 1)
         {
             await Task.Delay(100);
@@ -311,8 +330,15 @@ public class DropArea : Singleton<DropArea>
         for (int i = 0; i < checkAroundCoords.Length; i++)
         {
             testCoords = GridPosition + checkAroundCoords[i];
+         
             if (testCoords.x < 0 || testCoords.y < 0 || testCoords.x >= tiles.GetLength(0) || testCoords.y >= tiles.GetLength(1)) continue;
-            if (tiles[testCoords.x, testCoords.y]==null)continue;
+
+
+            if (tiles[testCoords.x, testCoords.y] == null)
+            {
+ 
+                continue;
+            }
 
             if (DragTile.blockType != tiles[testCoords.x, testCoords.y].blockType) continue;
             DragTile.AbsorbOtherTile(tiles[testCoords.x, testCoords.y]);
@@ -436,9 +462,7 @@ public class DropArea : Singleton<DropArea>
              if (Position1.y < OtherPosition.y) return EDirections.UP;
         if (Position1.y > OtherPosition.y) return EDirections.DOWN; 
 
-        }
-       
-      
+        } 
 
         return EDirections.NONE;
 

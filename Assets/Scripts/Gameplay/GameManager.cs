@@ -6,14 +6,15 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using TMPro;
 using Random = UnityEngine.Random;
+//public class Singleton<T> : SerializedMonoBehaviour where T : SerializedMonoBehaviour
 
-public class GameManager : Singleton<GameManager>
+public class GameManager   :   Singleton<GameManager>
 {
     public Sprite[] targetIcons;
 
     public GameObject targetScoreHolder;
     public UITarget target;
-    private Rigidbody2D targetHolderRb;
+    protected Rigidbody2D targetHolderRb;
     public SpriteRenderer targetIconRenderer;
     public TextMeshPro targetScoreText;
     [Header("TargetValues")]
@@ -28,12 +29,12 @@ public class GameManager : Singleton<GameManager>
     public static event FNotify_1Params<int> OnCombo;
     
 
-    private void OnDisable()
+    public  virtual void OnDisable()
     {
         GameMode.OnGameState -= GameMode_OnGameState;
     }
 
-    private void OnEnable()
+    public virtual void OnEnable()
     {
         GameMode.OnGameState += GameMode_OnGameState;
     }
@@ -66,7 +67,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    private void Start()
+    public virtual void Start()
     {
         targetHolderRb = targetScoreHolder.GetComponent<Rigidbody2D>();
         GenerateRandomTarget();
@@ -76,7 +77,7 @@ public class GameManager : Singleton<GameManager>
     {
         bTargetCompleted=false;
     }
-    void ResetTargetScoreHolder()
+    protected void ResetTargetScoreHolder()
     {
         target.ResetBackground();
 

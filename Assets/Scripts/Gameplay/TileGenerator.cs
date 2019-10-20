@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class TileGenerator : Singleton<TileGenerator>
 {
     // Start is called before the first frame update
+    [ReadOnly]
     public List<Tile> freeTiles=new List<Tile>();
 
 
@@ -65,7 +67,7 @@ public class TileGenerator : Singleton<TileGenerator>
         ArrangeTiles();
     }
 
-    private void DropArea_OnDropZoneReady()
+    public  virtual void DropArea_OnDropZoneReady()
     {
          GenerateStartingtiles();
     }
@@ -84,7 +86,7 @@ public class TileGenerator : Singleton<TileGenerator>
         }
         ArrangeTiles();
     }
-    private void DropArea_OnAddNewTile()
+    public virtual void DropArea_OnAddNewTile()
     {
         if(freeTiles.Count>5)return;
 
@@ -108,7 +110,7 @@ public class TileGenerator : Singleton<TileGenerator>
 
         ArrangeTiles();
     }
-    void ArrangeTiles()
+   protected void ArrangeTiles()
     {
         Vector2 targetPosition = transform.position;
 
