@@ -19,6 +19,13 @@ public class CameraManager : MonoBehaviour {
     public Vector3 finalPosition = new Vector3(0,30,-23);
     [Header("move out path")] public Vector3[] outroWaypoints;
 
+    private void OnDisable()
+    {
+        GameFeel.OnCameraShake -= GameFeel_OnCameraShake;
+        GameMode.OnGameState -= GameMode_OnGameState;
+
+    }
+
     private void OnEnable()
     {
          GameFeel.OnCameraShake += GameFeel_OnCameraShake;
@@ -27,6 +34,7 @@ public class CameraManager : MonoBehaviour {
 
     private void GameMode_OnGameState(EGameStates _val1)
     {
+        LeanTween.cancel(gameObject);
         switch (_val1)
         {
             case EGameStates.MAIN_MENU:
@@ -44,16 +52,14 @@ public class CameraManager : MonoBehaviour {
 
                 break;
             case EGameStates.ROUND_OVER:
-                 LeanTween.moveY(gameObject, -8, 1.5f).setEase(LeanTweenType.easeInOutBack);
+                LeanTween.moveY(gameObject, -8, 1.5f).setEase(LeanTweenType.easeInOutBack);
 
                 break;
             case EGameStates.GAME_OVER:
-               // LeanTween.moveY(gameObject, -8, .5f).setEase(LeanTweenType.easeInOutElastic);
-               GameFeel_OnCameraShake();
+              LeanTween.moveY(gameObject, 1, .5f).setEase(LeanTweenType.linear);
+             //  GameFeel_OnCameraShake();
                 break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(_val1), _val1, null);
-        }
+            }
     }
 
     private void Awake()
@@ -107,10 +113,6 @@ public class CameraManager : MonoBehaviour {
        
     }
 
-    private void OnDisable()
-    {
-         GameFeel.OnCameraShake -= GameFeel_OnCameraShake;
-
-    }
+   
     
 }

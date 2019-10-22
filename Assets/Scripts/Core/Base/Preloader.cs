@@ -19,7 +19,7 @@ public class Preloader : MonoBehaviour {
     void Start () {
    // GameAnalytics.Initialize();
         Application.targetFrameRate = 300;
-        FacebookInit();
+     //   FacebookInit();
         if (!debugMode)
         SceneManager.LoadSceneAsync(1);
  

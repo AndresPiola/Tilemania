@@ -155,6 +155,9 @@ public class Tile : SerializedMonoBehaviour
             case EGameStates.ROUND_OVER:
                 break;
             case EGameStates.GAME_OVER:
+
+                LeanTween.scale(gameObject, Vector3.zero, .2f);
+
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(_val1), _val1, null);
@@ -217,7 +220,7 @@ public class Tile : SerializedMonoBehaviour
     {
         LeanTween.cancel(gameObject);
         bDestroyed = true;
-        LeanTween.move(gameObject, TargetPosition, 0.2f).setEase(LeanTweenType.easeInExpo).setOnComplete(() =>
+        LeanTween.moveLocal(gameObject, TargetPosition, 0.2f).setEase(LeanTweenType.easeInExpo).setOnComplete(() =>
         {
             OnMergeFinished?.Invoke(blockScore,false);
             DisableTile();
@@ -225,15 +228,15 @@ public class Tile : SerializedMonoBehaviour
 
     }
 
-    public  void MoveTowards(Vector2 TargetPosition,bool bForceMove=false, float MoveTime= 0.2f )
+    public  void MoveTowards(Vector2 TargetPosition,bool bForceMove=false, float MoveTime= 0.3f )
     {
         if(bForceMove) LeanTween.cancel(gameObject);
-        LeanTween.move( gameObject, TargetPosition, MoveTime).setEase(LeanTweenType.easeInExpo)  ;
+        LeanTween.moveLocal( gameObject, TargetPosition, MoveTime).setEase(LeanTweenType.easeInExpo)  ;
      }
     public void MoveTowards(Vector2 TargetPosition, Action OncompleteFNotify, bool bForceMove = false, float MoveTime = 0.2f)
     {
         if (bForceMove) LeanTween.cancel(gameObject);
-        LeanTween.move(gameObject, TargetPosition, MoveTime).setEase(LeanTweenType.easeInExpo).setOnComplete(OncompleteFNotify);
+        LeanTween.moveLocal(gameObject, TargetPosition, MoveTime).setEase(LeanTweenType.easeInExpo).setOnComplete(OncompleteFNotify);
 
     }
     public void Initialize(   )
@@ -454,6 +457,7 @@ public class Tile : SerializedMonoBehaviour
 
     void ResetTile()
     {
+        transform.SetParent(null);
         SetSelected(false);
         bInDropArea = false;
         bDestroyed = false;

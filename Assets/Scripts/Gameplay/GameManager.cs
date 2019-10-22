@@ -158,13 +158,16 @@ public class GameManager   :   Singleton<GameManager>
             GameMode.Instance.SetRoundOver();
 
             AudioManager.Instance.PlaySound(ESfx.ROUND_OVER);
-            WaitForNextRound().RunSynchronously();
+            WaitForNextRound() ;
 
         }
         else
         {
-            AudioManager.Instance.PlaySound(ESfx.GAME_OVER);
+            GameMode.Instance.AddScore(roundScore);
+            GameMode.Instance.SaveScore(GameMode.Instance.score);
             GameMode.Instance.SetGameOver();
+            AudioManager.Instance.PlaySound(ESfx.GAME_OVER);
+         
         }
     }
     public  async  Task WaitForNextRound()

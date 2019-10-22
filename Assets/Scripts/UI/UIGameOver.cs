@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using TMPro;
@@ -12,16 +13,18 @@ public class UIGameOver : SerializedMonoBehaviour
     public RectTransform gameOverPanel;
     public Button retryButton;
  
-    public float waitTime = 1;
+    public int waitTime = 1000;
     public RectTransform gameOverRibbon;
     public TextMeshProUGUI scoreTxt;
     public TextMeshProUGUI bestScoreTxt;
-    public RectTransform grayBackground;
+    public RectTransform grayBackground; 
 
     [Header("ShowParams")]
     public Vector3 showPosition;
     public float showTweenTime;
     public LeanTweenType showEaseType;
+    public RectTransform[] scorePanel;
+    public RectTransform titlePanel;
 
     public RectTransform buttonsPanel;
 
@@ -76,7 +79,7 @@ public class UIGameOver : SerializedMonoBehaviour
                 StartCoroutine(HidePanel());
                 break;
             case EGameStates.GAME_OVER:
-                StartCoroutine( ShowGameOver());
+                ShowGameOver() ;
 
                 break;
 
@@ -96,21 +99,32 @@ public class UIGameOver : SerializedMonoBehaviour
         gameOverPanel.gameObject.SetActive(false);
 
     }
-    IEnumerator ShowGameOver()
+
+    async Task ShowGameOver()
     {
+
+        Debug.Log("ShowGameOver");
         //level?.SetText("Level "+GameInstance.Instance.playerLevel.ToString());
-        yield return Utils.GetWaitForSeconds(waitTime);
+        await Task.Delay(waitTime);
+
 
         gameOverPanel.gameObject.SetActive(true);
         LeanTween.alpha(grayBackground, .5f, .2f);
 
-        scoreTxt.SetText(GameMode.Instance.score+" pts");  
+        scoreTxt.SetText(GameMode.Instance.score + " pts");
         bestScoreTxt.SetText(GameInstance.Instance.GetBestScore() + " pts");
-        LeanTween.move(gameOverPanel, showPosition,showTweenTime);
-        LeanTween.moveY(buttonsPanel, 0, showTweenTime);
-        
+        LeanTween.move(gameOverPanel, showPosition, showTweenTime);
+        LeanTween.moveY(titlePanel, 0, .5f);
+         
+        LeanTween.moveX(scorePanel[0], 0, .5f);
+        await Task.Delay(200);
+        LeanTween.moveX(scorePanel[1], 0, .5f);
+        await Task.Delay(5);
 
-        yield return null;
+        LeanTween.moveY(buttonsPanel, 0, .5f);
+
+
     }
+
 
 }

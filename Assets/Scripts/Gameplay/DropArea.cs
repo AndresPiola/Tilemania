@@ -27,6 +27,7 @@ public class DropArea : Singleton<DropArea>
     public float tileSize;
 
     private bool bTargetCompleted;
+    public Vector2 offset;
 
     Vector2Int[] checkAroundCoords=new Vector2Int[]{new Vector2Int(0,1), new Vector2Int(1,0), new Vector2Int(0, -1), new Vector2Int(-1, 0) };
     public static event FNotify_1Params<Tile> OnTileDropped ;
@@ -65,6 +66,8 @@ public class DropArea : Singleton<DropArea>
             case EGameStates.ROUND_OVER:
                 break;
             case EGameStates.GAME_OVER:
+                LeanTween.scale(gameObject, Vector3.zero, .2f);
+
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(_val1), _val1, null);
@@ -112,11 +115,13 @@ public class DropArea : Singleton<DropArea>
         Vector2 tilePos = Vector2.zero;
         Vector2Int griPositionTmp = new Vector2Int(X,Y);
         TileFloor floorTileTmp;
-        tilePos = GridPositionToWorldPosition(griPositionTmp);
+        tilePos = GridPositionToLocalPosition(griPositionTmp);
 
         floorTileTmp = DropTilePool.Instance.GetPooledObjectComponent<TileFloor>(tilePos);
 
         floorTileTmp.transform.SetParent(transform);
+        floorTileTmp.transform.localPosition = tilePos;
+
         floorTileTmp.Initialize(griPositionTmp);
         floorTileTmp.gameObject.SetActive(true);
         if (bUseAnimation)
@@ -132,32 +137,33 @@ public class DropArea : Singleton<DropArea>
     {
         OnDropZoneReady?.Invoke();
     }
-
-    public Vector2 GridPositionToWorldPosition(Vector2Int GridPosition)
+    public Vector2 GridPositionToLocalPosition(Vector2Int GridPosition)
     {
-        Vector2 tilePos;
-        float offsetX =  1.5f;
-        tilePos.x = GridPosition.x * tileSize   - offsetX;
-        tilePos.y = GridPosition.y * tileSize   ;
-        return tilePos;
+      return  GridPositionToLocalPosition(GridPosition.x, GridPosition.y);
+
 
     }
-    public Vector2 GridPositionToWorldPosition(int X,int Y)
+    public Vector2 GridPositionToLocalPosition(int X, int Y)
     {
         Vector2 tilePos;
         float offsetX = 1.5f;
-        tilePos.x = X* tileSize - offsetX;
-        tilePos.y = Y * tileSize;
+        float offsetY = 3f;
+        tilePos.x = X * tileSize - offsetX;
+        tilePos.y = Y * tileSize + offsetY;
         return tilePos;
 
     }
+   
     public bool TryToDropTile(Tile DragTile, Vector2Int GridPosition)
     {
         if (tiles[GridPosition.x, GridPosition.y] != null) return false;
         tiles[GridPosition.x, GridPosition.y] = DragTile;
         activeTiles.Add(DragTile);  
 
-        Vector2 targetPos = GridPositionToWorldPosition(GridPosition);
+        DragTile.transform.SetParent(transform);
+        Vector2 targetPos = GridPositionToLocalPosition(GridPosition) ;
+       
+
         DragTile.SetInPosition();
         DragTile.MoveTowards(targetPos, () =>
         {
@@ -182,8 +188,7 @@ public class DropArea : Singleton<DropArea>
          searchQueue.Add(() => { SearchForMatch(DragTile, GridPosition);});
           
     }
-     
-
+      
     public async Task SearchForMatch (Tile DragTile, Vector2Int GridPosition)
     { 
       //  Debug.Log("SearchForMatch"+ DragTile.name+"  "+GridPosition.ToString());
@@ -225,54 +230,12 @@ public class DropArea : Singleton<DropArea>
 
 
     }
-    /*
-    IEnumerator SearchForMatch(Tile DragTile, Vector2Int GridPosition)
-    {
-        yield return Utils.GetWaitForSeconds(.1f);
-        if (!FindMergeTiles(DragTile, GridPosition))
-        {
-            yield return Utils.GetWaitForSeconds(.2f);
-            if (FindSwapTiles(DragTile, GridPosition,out Tile OtherTile,out var swapedPosition))
-            {
-                yield return Utils.GetWaitForSeconds(.2f);
-                PopUpMergeLinkPool.Instance.GetPooledObjectComponent<UIPopUpMergeLink>(DragTile.transform.position).
-                 ShowPopUp(ECombinationType.SWAP);
-                AudioManager.Instance.PlaySound(ESfx.COMBO_SWAP);
-                GameManager.Instance.AddComboCount();
-                OnAddNewTile?.Invoke();
-                AddToQueue(SearchForMatch(DragTile, swapedPosition)) ;
-                AddToQueue(SearchForMatch(OtherTile, GridPosition)) ;
-                 
-                
-            }
-            else
-            { 
-                yield return Utils.GetWaitForSeconds(.2f);
-
-                MatchingFinished();
-            }
-        }
-        else///merge combo
-        {
-            yield return Utils.GetWaitForSeconds(.2f);
-            PopUpMergeLinkPool.Instance.GetPooledObjectComponent<UIPopUpMergeLink>(DragTile.transform.position).
-                ShowPopUp(ECombinationType.MERGE);
-            AudioManager.Instance.PlaySound(ESfx.COMBO_MERGE);
-
-            GameManager.Instance.AddComboCount();
-            AddToQueue(SearchForMatch(DragTile, GridPosition)); 
-        }
-        CheckCompletedTargetScore();
-
-    }
-    */
+ 
     void ExecutePendingSearch()
     {
       
         for (int i = 0; i < searchQueue.Count; i++)
-        {
-           
-
+        { 
             if (searchQueue[i] != null)
             {
                // Debug.Log("execute pending"+ searchQueue[i]);
@@ -310,15 +273,17 @@ public class DropArea : Singleton<DropArea>
             {
                 activeTiles[i].AddValue(comboCount);
                 AudioManager.Instance.PlaySound(ESfx.COMBO_COUNT);
-                await Task.Delay(200);
-
+                await Task.Delay(200); 
             }
+
+            CheckCompletedTargetScore();
+
         }
         searchQueue.Clear();
 
       //  await Task.Delay(1000);
         GameManager.Instance.ResetComboCount();
-            OnResolvingMatch?.Invoke(false);
+        OnResolvingMatch?.Invoke(false);
         MatchingFinished();
 
     }
@@ -332,8 +297,7 @@ public class DropArea : Singleton<DropArea>
             testCoords = GridPosition + checkAroundCoords[i];
          
             if (testCoords.x < 0 || testCoords.y < 0 || testCoords.x >= tiles.GetLength(0) || testCoords.y >= tiles.GetLength(1)) continue;
-
-
+ 
             if (tiles[testCoords.x, testCoords.y] == null)
             {
  
@@ -342,7 +306,7 @@ public class DropArea : Singleton<DropArea>
 
             if (DragTile.blockType != tiles[testCoords.x, testCoords.y].blockType) continue;
             DragTile.AbsorbOtherTile(tiles[testCoords.x, testCoords.y]);
-            tiles[testCoords.x, testCoords.y].MergeTowards(GridPositionToWorldPosition(GridPosition.x, GridPosition.y),
+            tiles[testCoords.x, testCoords.y].MergeTowards(GridPositionToLocalPosition(GridPosition.x, GridPosition.y),
                 DragTile.AddValue);
           RemoveTile(testCoords);
             bMergeFound = true;
@@ -475,7 +439,7 @@ public class DropArea : Singleton<DropArea>
             for (int x = 0; x < 4; x++)
             {
                 if (tiles[x, y]==null)continue;
-                 tiles[x, y].MoveTowards(GridPositionToWorldPosition(x,y),true);
+                 tiles[x, y].MoveTowards(GridPositionToLocalPosition(x,y),true);
             }
            
         }

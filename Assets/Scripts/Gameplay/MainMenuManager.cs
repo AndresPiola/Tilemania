@@ -1,39 +1,24 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class MainMenuManager : Singleton<MainMenuManager>
 {
+    public TextMeshProUGUI bestScore;
 
     void OnDisable()
     {
-        UIMenuButton.OnButtonPress -= UIMenuButton_OnButtonPress; 
-    }
+      }
 
     void OnEnable()
     {
-        UIMenuButton.OnButtonPress += UIMenuButton_OnButtonPress;
-    }
+     }
 
-    private void UIMenuButton_OnButtonPress(EButtonActions Param1)
+    private void Start()
     {
-        switch (Param1)
-        {
-            case EButtonActions.MainGame:
-                SceneManager.LoadScene("Main");
-
-                break;
-            case EButtonActions.Tutorial:
-                SceneManager.LoadScene("MainTutorial");
-
-                break;
-        }
-    }
-
-    public void LoadMainGame()
-    {
-        SceneManager.LoadScene("Main");
-
+        bestScore.SetText(GameInstance.Instance.GetBestScore().ToString());
     }
 }

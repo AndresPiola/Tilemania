@@ -10,6 +10,8 @@ public class TutorialManager : GameManager
 {
      
     [Header("Tutorial")] public GameObject arrowObject;
+    public GameObject dragShow;
+
    
     private int tutorialStage;
 
@@ -42,6 +44,7 @@ public class TutorialManager : GameManager
         switch (tutorialStage)
         {
             case 1:
+                LeanTween.scale(dragShow, Vector3.zero, .2f);
                 arrowObject.SetActive(true);
                 break;
             case 2:

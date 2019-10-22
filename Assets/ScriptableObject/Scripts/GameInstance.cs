@@ -158,58 +158,7 @@ public class GameInstance : SingletonScriptableObject<GameInstance> {
 
     }
     
-    private void OnEnable()
-    {
-         GameMode.OnGameState += GameMode_OnGameState;
-
-
-        EnableShowMainMenu(true);
-
-    }
-    private void OnDisable()
-    {
-
-         GameMode.OnGameState -= GameMode_OnGameState;
-
-    }
-    private void GameMode_OnGameState(EGameStates _val1)
-    {
-        switch (_val1)
-        {
-            case EGameStates.MAIN_MENU:
-                break;
-            case EGameStates.CONNECTING:
-                break;
-            case EGameStates.RELOADING_ROUND:
-                break;
-            case EGameStates.LOADING_NEXTROUND:
-                break;
-            case EGameStates.LOADING_REMATCH:
-                break;
-            case EGameStates.GAMEPLAY:
-
-                EnableShowMainMenu(false);
-                break;
-            case EGameStates.ROUND_OVER:
-                break;
-            case EGameStates.GAME_OVER:
-                break;
-            default:
-                break;
-        }
-    }
-
-    public void EnableShowMainMenu(bool _mustShow)
-    {
-        bHideMainMenu = !_mustShow;
-
-    }
-
-    public bool GetMustHideMainMenu()
-    {
-        return bHideMainMenu;
-    }
-    
+        
 
 
     public void LoadPlayerData()
