@@ -7299,9 +7299,410 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: debugTiles
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[TileData, Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 8
+    - Name: 
+      Entry: 7
+      Data: 1|TileData, Assembly-CSharp
+    - Name: BlockTypeIndex
+      Entry: 3
+      Data: 1
+    - Name: BlockScoreValue
+      Entry: 3
+      Data: 1
+    - Name: BlockSubColorIndex
+      Entry: 3
+      Data: 2
+    - Name: sideColor
+      Entry: 7
+      Data: 2|System.Collections.Generic.Dictionary`2[[EDirections, Assembly-CSharp],[System.Int32,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 3|System.Collections.Generic.EnumEqualityComparer`1[[EDirections, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 4|TileData, Assembly-CSharp
+    - Name: BlockTypeIndex
+      Entry: 3
+      Data: 2
+    - Name: BlockScoreValue
+      Entry: 3
+      Data: 3
+    - Name: BlockSubColorIndex
+      Entry: 3
+      Data: 2
+    - Name: sideColor
+      Entry: 7
+      Data: 5|System.Collections.Generic.Dictionary`2[[EDirections, Assembly-CSharp],[System.Int32,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 6|System.Collections.Generic.EnumEqualityComparer`1[[EDirections, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 4
+    - Name: $v
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 7|TileData, Assembly-CSharp
+    - Name: BlockTypeIndex
+      Entry: 3
+      Data: 1
+    - Name: BlockScoreValue
+      Entry: 3
+      Data: 1
+    - Name: BlockSubColorIndex
+      Entry: 3
+      Data: 1
+    - Name: sideColor
+      Entry: 7
+      Data: 8|System.Collections.Generic.Dictionary`2[[EDirections, Assembly-CSharp],[System.Int32,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 9
+      Data: 6
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 9|TileData, Assembly-CSharp
+    - Name: BlockTypeIndex
+      Entry: 3
+      Data: 4
+    - Name: BlockScoreValue
+      Entry: 3
+      Data: 3
+    - Name: BlockSubColorIndex
+      Entry: 3
+      Data: 2
+    - Name: sideColor
+      Entry: 7
+      Data: 10|System.Collections.Generic.Dictionary`2[[EDirections, Assembly-CSharp],[System.Int32,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 9
+      Data: 6
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 3
+    - Name: $v
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 4
+    - Name: $v
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 11|TileData, Assembly-CSharp
+    - Name: BlockTypeIndex
+      Entry: 3
+      Data: 1
+    - Name: BlockScoreValue
+      Entry: 3
+      Data: 1
+    - Name: BlockSubColorIndex
+      Entry: 3
+      Data: 1
+    - Name: sideColor
+      Entry: 7
+      Data: 12|System.Collections.Generic.Dictionary`2[[EDirections, Assembly-CSharp],[System.Int32,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 9
+      Data: 6
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 4
+    - Name: $v
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 13|TileData, Assembly-CSharp
+    - Name: BlockTypeIndex
+      Entry: 3
+      Data: 4
+    - Name: BlockScoreValue
+      Entry: 3
+      Data: 3
+    - Name: BlockSubColorIndex
+      Entry: 3
+      Data: 2
+    - Name: sideColor
+      Entry: 7
+      Data: 14|System.Collections.Generic.Dictionary`2[[EDirections, Assembly-CSharp],[System.Int32,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 9
+      Data: 6
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 4
+    - Name: $v
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 3
+    - Name: $v
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 15|TileData, Assembly-CSharp
+    - Name: BlockTypeIndex
+      Entry: 3
+      Data: 0
+    - Name: BlockScoreValue
+      Entry: 3
+      Data: 0
+    - Name: BlockSubColorIndex
+      Entry: 3
+      Data: 0
+    - Name: sideColor
+      Entry: 7
+      Data: 16|System.Collections.Generic.Dictionary`2[[EDirections, Assembly-CSharp],[System.Int32,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 9
+      Data: 6
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 17|TileData, Assembly-CSharp
+    - Name: BlockTypeIndex
+      Entry: 3
+      Data: 0
+    - Name: BlockScoreValue
+      Entry: 3
+      Data: 0
+    - Name: BlockSubColorIndex
+      Entry: 3
+      Data: 0
+    - Name: sideColor
+      Entry: 7
+      Data: 18|System.Collections.Generic.Dictionary`2[[EDirections, Assembly-CSharp],[System.Int32,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 9
+      Data: 6
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   dontdestroyOnLoad: 0
   freeTiles: []
+  bDebugmode: 0
 --- !u!1 &777636501
 GameObject:
   m_ObjectHideFlags: 0

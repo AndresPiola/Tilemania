@@ -9,6 +9,8 @@ public class TileGenerator : Singleton<TileGenerator>
     [ReadOnly]
     public List<Tile> freeTiles=new List<Tile>();
 
+    public bool bDebugmode;
+    public List<TileData> debugTiles;
 
     void OnDisable()
     {
@@ -69,9 +71,32 @@ public class TileGenerator : Singleton<TileGenerator>
 
     public  virtual void DropArea_OnDropZoneReady()
     {
-         GenerateStartingtiles();
+    #if UNITY_EDITOR
+            if (bDebugmode)
+            {
+                GenerateDebugStartingTiles();
+                return;
+                
+            }
+    #endif
+        GenerateStartingtiles();
     }
 
+    void GenerateDebugStartingTiles()
+    {
+
+        Tile tileRef;
+       
+        for (int i = 0; i < 5; i++)
+        {
+            tileRef = TilesPool.Instance.GetPooledObjectComponent<Tile>();
+            TileData tmpTData=  debugTiles[i];
+
+            tileRef.Initialize(tmpTData);
+            freeTiles.Add(tileRef);
+        }
+        ArrangeTiles();
+    }
     void GenerateStartingtiles()
     {
         GameObject tileRef;
@@ -79,8 +104,7 @@ public class TileGenerator : Singleton<TileGenerator>
         for (int i = 0; i < 5; i++)
         {
             tileRef= TilesPool.Instance.GetPooledObject( );
-            tileRef.name = "tile" + i;
-
+            
             tileRef.GetComponent<Tile>().Initialize();
             freeTiles.Add(tileRef.GetComponent<Tile>()); 
         }
@@ -88,7 +112,7 @@ public class TileGenerator : Singleton<TileGenerator>
     }
     public virtual void DropArea_OnAddNewTile()
     {
-        if(freeTiles.Count>5)return;
+        if(freeTiles.Count>4)return;
 
         GameObject tileRef = TilesPool.Instance.GetPooledObject();
         tileRef.transform.position = transform.position + Vector3.right * 5;

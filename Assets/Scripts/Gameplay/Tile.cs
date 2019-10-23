@@ -246,6 +246,12 @@ public class Tile : SerializedMonoBehaviour
         GenerateRandomValues(); 
     }
 
+    public void Initialize(TileData TileDataRef)
+    {
+        Initialize(TileDataRef.BlockTypeIndex,TileDataRef.BlockScoreValue,TileDataRef.BlockSubColorIndex,
+            TileDataRef);
+    }
+
     public void Initialize(int BlockTypeIndex, int BlockScoreValue, int BlockSubColorIndex, EDirections ColorDirection, int DirectionColor)
     {
         

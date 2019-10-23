@@ -29,9 +29,7 @@ public class TouchCOntroller : MonoBehaviour
     private void PlayerController_OnTouchBegin(FTouchInfo TouchInfo)
     {
         if(bTouchDisabled)return;
-        ;
-
-        Collider2D  colHit= Physics2D.OverlapBox(TouchInfo.touchWorldPoint, Vector2.one, 0);
+          Collider2D  colHit= Physics2D.OverlapBox(TouchInfo.touchWorldPoint, Vector2.one*.5f, 0);
 
  
         if(colHit==null)return;
