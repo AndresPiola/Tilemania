@@ -12,9 +12,85 @@ MonoBehaviour:
   m_Script: {fileID: 1726182683, guid: a4865f1ab4504ed8a368670db22f409c, type: 3}
   m_Name: AOTGenerationConfig
   m_EditorClassIdentifier: 
-  automateBeforeBuilds: 0
+  automateBeforeBuilds: 1
   deleteDllAfterBuilds: 1
   AutomateForAllAOTPlatforms: 1
   automateForPlatforms: 0900000014000000
-  lastScan: 0
-  supportSerializedTypes: []
+  lastScan: 637073762396729920
+  supportSerializedTypes:
+  - TypeName: System.Action, mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: UnityEngine.AudioClip, UnityEngine.AudioModule
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Boolean, mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Boolean[,], mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: UnityEngine.Color, UnityEngine.CoreModule
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Collections.Generic.Dictionary`2[[EDirections, Assembly-CSharp],[FSwapIndicators,
+      Assembly-CSharp]], mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Collections.Generic.Dictionary`2[[EDirections, Assembly-CSharp],[System.Int32,
+      mscorlib]], mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Collections.Generic.Dictionary`2[[ESfx, Assembly-CSharp],[UnityEngine.AudioClip,
+      UnityEngine.AudioModule]], mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: EDirections, Assembly-CSharp
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Collections.Generic.EnumEqualityComparer`1[[EDirections, Assembly-CSharp]],
+      mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Collections.Generic.EnumEqualityComparer`1[[ESfx, Assembly-CSharp]],
+      mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: ESfx, Assembly-CSharp
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Single, mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: FSwapIndicators, Assembly-CSharp
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Collections.Generic.IEqualityComparer`1[[EDirections, Assembly-CSharp]],
+      mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Collections.Generic.IEqualityComparer`1[[ESfx, Assembly-CSharp]],
+      mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Int32, mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: System.Collections.Generic.List`1[[System.Action, mscorlib]], mscorlib
+    IsCustom: 0
+    Emit: 1
+  - TypeName: UnityEngine.ParticleSystem, UnityEngine.ParticleSystemModule
+    IsCustom: 0
+    Emit: 1
+  - TypeName: UnityEngine.SpriteRenderer, UnityEngine.CoreModule
+    IsCustom: 0
+    Emit: 1
+  - TypeName: Tile[,], Assembly-CSharp
+    IsCustom: 0
+    Emit: 1
+  - TypeName: TileData, Assembly-CSharp
+    IsCustom: 0
+    Emit: 1
+  - TypeName: TileData[], Assembly-CSharp
+    IsCustom: 0
+    Emit: 1
