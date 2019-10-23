@@ -29,7 +29,13 @@ public class AudioData : SingletonScriptableObject<AudioData>
 
     public AudioClip GetAudioClip(ESfx Key)
     {
-        return gameClips[Key];
+        if(gameClips.ContainsKey(Key))
+            return gameClips[Key];
+        else
+        {
+            Debug.LogWarning("Not Key for "+Key.ToString());
+            return null;
+        }
 
     }
 
